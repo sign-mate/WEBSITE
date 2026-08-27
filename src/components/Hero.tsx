@@ -113,13 +113,7 @@ export default function Hero() {
             <p>자세한 내용은 아래 첨부파일을 참고해주세요.</p>
             <p>문의사항은 담당자에게 연락 바랍니다.</p>
           </div>
-          <div className="hint-tag mono">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-              <path d="M12 3v14m0 0l-4-4m4 4l4-4" />
-              <rect x="4" y="19" width="16" height="2" rx="1" />
-            </svg>
-            drag any sentence
-          </div>
+          <div className="hint-tag mono">drag any sentence</div>
         </div>
 
         <div className={`demo-card${idle ? " idle" : ""}`} ref={cardRef}>
