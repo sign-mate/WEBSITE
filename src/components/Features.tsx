@@ -59,6 +59,7 @@ export default function Features() {
 
   return (
     <section className="wrap" id="features">
+      <div className="mesh mesh-features" />
       <div className={`section-head ${head.className}`} ref={head.ref}>
         <h2>화면을 대신 차지하지 않습니다</h2>
         <p>고정된 패널이 아니라 필요한 곳에 필요한 만큼만 떠 있는 카드입니다.</p>
@@ -66,7 +67,7 @@ export default function Features() {
 
       <div className="features">
         {FEATURES.map(({ label, title, body, Visual }) => (
-          <div className="feature" key={label}>
+          <div className="feature glass-rim" key={label}>
             <div className="feature-visual">
               <Visual />
             </div>

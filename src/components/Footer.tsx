@@ -14,7 +14,7 @@ export default function Footer() {
           <a href="#features">서비스 소개</a>
           <a href="#how">작동 방식</a>
           <a href="#install">설치하기</a>
-          <a href="#">GitHub</a>
+          <a href="https://github.com/sign-mate">GitHub</a>
         </nav>
       </div>
     </footer>

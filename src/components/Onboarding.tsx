@@ -43,12 +43,13 @@ export default function Onboarding() {
 
   return (
     <section className="wrap" id="how">
+      <div className="mesh mesh-onboarding" />
       <div className={`section-head ${head.className}`} ref={head.ref}>
         <h2>처음 써보신다면, 이렇게 시작하세요</h2>
         <p>왼쪽 단계를 눌러보면 오른쪽 카드가 그 순간을 그대로 보여줘요.</p>
       </div>
 
-      <div className={`onboarding ${card.className}`} ref={card.ref}>
+      <div className={`onboarding glass-rim ${card.className}`} ref={card.ref}>
         <div className="ob-tabs">
           {TABS.map((tab, i) => (
             <button
