@@ -10,9 +10,15 @@ export default function Nav() {
         <img src={logo} alt="Signmate" />
         Signmate
       </div>
-      <a className="nav-cta" href="#install">
-        확장 프로그램 설치 →
-      </a>
+      <div className="nav-actions">
+        {/* 클릭 동작(모달/페이지 이동)은 추후 별도 작업 */}
+        <a className="nav-login" href="#">
+          로그인
+        </a>
+        <a className="nav-cta" href="#install">
+          확장 프로그램 설치 →
+        </a>
+      </div>
     </nav>
   );
 }
