@@ -34,7 +34,7 @@ export default function SmsVerification({
   const cooldownIn = useCountdown(sentAt ? sentAt + RESEND_COOLDOWN_MS : null);
 
   const expired = sentAt !== null && expiresIn === 0;
-  const canResend = sentAt === null || (cooldownIn === 0 && resendCount < MAX_RESEND);
+  const cooldownActive = sentAt !== null && cooldownIn > 0;
 
   const handleSend = async () => {
     if (!phone) {
@@ -43,6 +43,12 @@ export default function SmsVerification({
     }
     if (resendCount >= MAX_RESEND) {
       setError("인증코드 발송 횟수를 초과했습니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+    // 쿨다운 중에는 버튼을 눌러도 발송하지 않는다. 버튼을 disabled로 잠가 두면
+    // 왜 안 되는지 알기 어려워서, 누를 수는 있게 두고 남은 시간을 알려준다.
+    if (cooldownActive) {
+      setError(`${cooldownIn}초 후에 다시 시도해주세요.`);
       return;
     }
     setError(null);
@@ -97,7 +103,7 @@ export default function SmsVerification({
           type="button"
           className="btn-outline sms-send-btn"
           onClick={handleSend}
-          disabled={disabled || verified || sending || !canResend}
+          disabled={disabled || verified || sending}
         >
           {sentAt === null ? "인증코드 발송" : "재발송"}
           {sentAt !== null && cooldownIn > 0 ? ` (${cooldownIn}s)` : ""}

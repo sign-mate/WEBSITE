@@ -30,25 +30,40 @@ declare global {
 
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
+/** index.html의 GIS 스크립트가 async라, 페이지가 뜬 직후 누르면 아직 로드 중일 수 있다 */
+const SCRIPT_WAIT_MS = 2000;
+const POLL_INTERVAL_MS = 100;
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** window.google이 생길 때까지 짧게 기다린다. 시간 안에 안 생기면 undefined를 돌려준다. */
+async function waitForGoogleScript() {
+  const deadline = Date.now() + SCRIPT_WAIT_MS;
+  while (!window.google && Date.now() < deadline) {
+    await sleep(POLL_INTERVAL_MS);
+  }
+  return window.google;
+}
+
 /**
  * Google 로그인 팝업을 띄우고 idToken(=credential)을 반환합니다.
  * 버튼 클릭 등 사용자 제스처 안에서 호출하세요.
  */
-export function getGoogleIdToken(): Promise<string> {
-  return new Promise((resolve, reject) => {
-    if (!CLIENT_ID) {
-      reject(new Error("VITE_GOOGLE_CLIENT_ID가 설정되지 않았습니다. .env를 확인해주세요."));
-      return;
-    }
-    if (!window.google) {
-      reject(new Error("Google 로그인 스크립트가 로드되지 않았습니다. index.html을 확인해주세요."));
-      return;
-    }
+export async function getGoogleIdToken(): Promise<string> {
+  if (!CLIENT_ID) {
+    throw new Error("VITE_GOOGLE_CLIENT_ID가 설정되지 않았습니다. .env를 확인해주세요.");
+  }
 
-    window.google.accounts.id.initialize({
+  const google = await waitForGoogleScript();
+  if (!google) {
+    throw new Error("Google 로그인 스크립트가 로드되지 않았습니다. index.html을 확인해주세요.");
+  }
+
+  return new Promise<string>((resolve) => {
+    google.accounts.id.initialize({
       client_id: CLIENT_ID,
       callback: (response) => resolve(response.credential),
     });
-    window.google.accounts.id.prompt();
+    google.accounts.id.prompt();
   });
 }

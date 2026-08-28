@@ -3,7 +3,7 @@ import type { Provider } from "../types";
 import { googleSignup, signup } from "../api";
 import { ApiError, setTokens } from "../apiClient";
 import SmsVerification from "./SmsVerification";
-import PasswordFields, { passwordsMatch } from "./PasswordFields";
+import PasswordFields, { isValidPassword, passwordsMatch } from "./PasswordFields";
 import DuplicateAccountModal from "./DuplicateAccountModal";
 
 interface Prefill {
@@ -36,7 +36,7 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
   // 구글 가입은 비밀번호가 필요 없으므로(서버가 받지도 않음) 비밀번호 검증에서 제외
   const canSubmit =
     name.trim().length > 0 &&
-    (isGoogle || (email.trim().length > 0 && passwordsMatch(password, confirm))) &&
+    (isGoogle || (email.trim().length > 0 && isValidPassword(password) && passwordsMatch(password, confirm))) &&
     verified;
 
   const handleSubmit = async () => {
