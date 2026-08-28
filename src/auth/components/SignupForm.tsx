@@ -121,6 +121,10 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
         {submitting ? "가입 중..." : "가입 완료"}
       </button>
 
+      <button type="button" className="link-btn" style={{ marginTop: 14 }} onClick={onGoToLogin}>
+        ← 로그인으로 돌아가기
+      </button>
+
       {duplicate && (
         <DuplicateAccountModal
           message={duplicate.message}

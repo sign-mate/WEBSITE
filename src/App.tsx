@@ -21,7 +21,7 @@ export default function App() {
 
       {authOpen && (
         <div className="modal-backdrop" onClick={() => setAuthOpen(false)}>
-          <div onClick={(e) => e.stopPropagation()} style={{ position: "relative" }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ position: "relative", width: 420 }}>
             <button
               type="button"
               onClick={() => setAuthOpen(false)}

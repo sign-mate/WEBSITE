@@ -14,7 +14,7 @@
   --coral-soft: #fff1ec;
   --coral-tint: #fff6f2;
   --shadow: 0 20px 60px -20px rgba(255, 90, 90, 0.25);
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --mono: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* 유리질(glassmorphism). 값은 사이드바 확장 프로그램(sidebar.css)에서 그대로 가져왔다.
      면이 넓을수록 같은 재질로 보이려면 blur가 커야 한다는 규칙도 같이 따른다:
@@ -59,6 +59,9 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
+/* 폼 컨트롤은 기본적으로 OS 폰트를 쓰므로 명시적으로 body(Pretendard)를 상속시킨다 */
+button, input, select, textarea, optgroup { font-family: inherit; }
 
 body {
   margin: 0;
