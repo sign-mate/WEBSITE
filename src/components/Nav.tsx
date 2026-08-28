@@ -1,7 +1,11 @@
 import logo from "../assets/logo.png";
 import { useScrolled } from "../hooks/useScrolled";
 
-export default function Nav() {
+interface Props {
+  onLoginClick: () => void;
+}
+
+export default function Nav({ onLoginClick }: Props) {
   const scrolled = useScrolled();
 
   return (
@@ -11,8 +15,14 @@ export default function Nav() {
         Signmate
       </div>
       <div className="nav-actions">
-        {/* 클릭 동작(모달/페이지 이동)은 추후 별도 작업 */}
-        <a className="nav-login" href="#">
+        <a
+          className="nav-login"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            onLoginClick();
+          }}
+        >
           로그인
         </a>
         <a className="nav-cta" href="#install">
