@@ -15,29 +15,76 @@
   홈페이지와 완전히 같은 재질감을 내려면 같은 :root 토큰을 공유해야 합니다.
 */
 
+/*
+  사이드바(.signmate-frame + .signmate-sidebar)와 같은 구조다.
+
+  - 카드 박스 자신은 배경이 없다. 그림자만 갖는다.
+  - 유리면은 ::before가 만든다. 흰색 0.68 + blur(14px) saturate(1.2)로
+    사이드바 카드 본체와 동일한 값이다.
+  - 1px 그라디언트 테두리 선은 ::after가 마스크로 그린다.
+
+  카드 자신에 배경을 두면 안 된다. 예전에는 여기에 분홍 그라디언트를 깔고
+  ::before에 blur를 걸었는데, 그러면 blur가 보는 것이 뒤 페이지가 아니라
+  부모의 그라디언트라서 뒤가 비치지 않고 분홍색만 흐려졌다.
+  사이드바 프레임에 배경을 두지 않는 이유와 같다.
+
+  blur를 카드 자신이 아니라 ::before에 거는 이유: backdrop-filter는 그 요소를
+  fixed 자손의 컨테이닝 블록으로 만든다. 카드에 직접 걸면 카드 안에서 열리는
+  계정 중복 모달(.modal-backdrop, position: fixed)이 화면 전체가 아니라
+  카드 안쪽에 갇힌다. 가짜 요소에 걸면 그 문제가 없다.
+*/
 .auth-card {
   position: relative;
   max-width: 400px;
   margin: 0 auto;
   padding: 33px 29px;
-  border-radius: 19px;
-  background: var(--glass-grad, linear-gradient(135deg, #ffd6ba, #ffb3c4, #ffd6ba));
+  border-radius: 17px;
+  /* 두 겹: 크게 퍼지는 그림자가 카드를 띄우고, 얕은 그림자가 접지면을 잡는다.
+     겉 그림자는 border-box 안쪽에 그려지지 않으므로 유리면이 탁해지지 않는다. */
+  box-shadow: var(--glass-lift, 0 20px 40px -20px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.07));
 }
 
+/* 유리면 */
 .auth-card::before {
   content: "";
   position: absolute;
-  inset: 1px;
-  border-radius: 18px;
+  inset: 0;
+  border-radius: inherit;
   background: var(--glass-wide, rgba(255, 255, 255, 0.68));
   backdrop-filter: var(--glass-blur, blur(14px) saturate(1.2));
   -webkit-backdrop-filter: var(--glass-blur, blur(14px) saturate(1.2));
-  box-shadow:
-    var(--glass-sheen, inset 0 1px 0 rgba(255, 255, 255, 0.6)),
-    var(--glass-lift, 0 20px 40px -20px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06));
+  /* 유리 두께의 윗면에 빛이 걸린 것처럼 보이게 하는 1px 하이라이트 */
+  box-shadow: var(--glass-sheen, inset 0 1px 0 rgba(255, 255, 255, 0.6));
   z-index: 0;
 }
 
+/*
+  1px 그라디언트 테두리 선. 그라디언트를 가득 깔고 가운데(content-box)를 마스크로 파낸다.
+  마스크를 카드 자신에 걸면 그 안쪽이 backdrop root가 되어 유리면이 페이지를 볼 수 없으므로
+  (투명해지긴 하지만 흐려지지 않는다) 반드시 가짜 요소에만 건다.
+  index.css의 .glass-rim::after와 같은 구현인데, auth.css를 단독으로도 쓸 수 있게 여기서 다시 정의한다.
+*/
+.auth-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--glass-grad, linear-gradient(135deg, #ffd6ba, #ffb3c4, #ffd6ba));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 유리면(::before)과 테두리 선(::after) 사이에 내용을 놓는다 */
 .auth-card > * {
   position: relative;
   z-index: 1;
@@ -58,7 +105,7 @@
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: var(--muted, #6b6a64);
+  color: var(--ink, #1a1a1a);
   margin-bottom: 6px;
 }
 
@@ -228,7 +275,47 @@
 .sms-timer { font-size: 12.5px; color: var(--coral-deep, #ef4d6f); flex-shrink: 0; min-width: 42px; }
 .sms-verified { color: #2a9d5c; font-size: 13px; margin: 8px 0 0; font-weight: 600; }
 
-/* 계정 중복 모달 — 카드와 동일한 유리질 톤 + 그라디언트 rim */
+/*
+  로그인/회원가입 모달의 겉면. 익스텐션 사이드바처럼 뒤 페이지가 그대로 환하게
+  비쳐 보이는 것이 목적이므로 어둡게 덮지 않는다. 0.04는 모달이 열려 있다는
+  신호와 클릭해서 닫을 면적만 주는 정도이고 페이지 색은 사실상 그대로다.
+
+  여기에 backdrop-filter를 걸면 안 된다. 걸면 이 요소가 backdrop root가 되어
+  안쪽 카드의 유리면이 뒤 페이지를 볼 수 없고(투명해지지만 흐려지지 않는다),
+  카드가 유리가 아니라 그냥 반투명한 흰 판처럼 보인다.
+*/
+.auth-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.04);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+
+/* 카드 오른쪽 위 닫기 버튼. 사이드바 헤더 버튼(.signmate-sidebar의 유리 버튼 판)과 같은 톤 */
+.auth-modal-close {
+  position: absolute;
+  top: -40px;
+  /* 래퍼는 420px, 카드는 400px이라 10px을 빼야 카드 오른쪽 모서리에 맞는다 */
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ink, #1a1a1a);
+  background: var(--glass-mid, rgba(255, 255, 255, 0.55));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.5));
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.12);
+}
+.auth-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
+
+/* 계정 중복 모달 — 카드와 동일한 유리질 톤 + 그라디언트 rim.
+   이쪽은 "선택을 해야 넘어가는" 확인 창이라 시선을 묶어두는 dim을 그대로 둔다. */
 .modal-backdrop {
   position: fixed; inset: 0; background: rgba(26, 26, 26, 0.35);
   backdrop-filter: blur(2px);

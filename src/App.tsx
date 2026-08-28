@@ -20,21 +20,16 @@ export default function App() {
       <Footer />
 
       {authOpen && (
-        <div className="modal-backdrop" onClick={() => setAuthOpen(false)}>
+        <div className="auth-modal-backdrop" onClick={() => setAuthOpen(false)}>
           <div onClick={(e) => e.stopPropagation()} style={{ position: "relative", width: 420 }}>
+            {/*
+              dim이 없어져 뒤 페이지가 밝게 비치므로 흰 ✕는 보이지 않는다.
+              카드와 같은 유리질 칩을 깔고 글자색을 잉크로 바꿔 어떤 콘텐츠 위에서도 읽히게 한다.
+            */}
             <button
               type="button"
               onClick={() => setAuthOpen(false)}
-              style={{
-                position: "absolute",
-                top: -36,
-                right: 0,
-                background: "none",
-                border: "none",
-                color: "#fff",
-                fontSize: 20,
-                cursor: "pointer",
-              }}
+              className="auth-modal-close"
               aria-label="닫기"
             >
               ✕
