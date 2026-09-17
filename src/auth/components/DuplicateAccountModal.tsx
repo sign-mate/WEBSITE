@@ -1,5 +1,4 @@
 interface Props {
-  /** 백엔드 에러 메시지를 그대로 사용 (USER-006/USER-007) */
   message: string;
   suggestion: string;
   onClose: () => void;

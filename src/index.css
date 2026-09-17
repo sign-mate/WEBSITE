@@ -3,9 +3,6 @@
   --panel: #fffdfb;
   --ink: #1a1a1a;
   --muted: #6b6a64;
-  /* mesh 위 본문용. --muted는 mesh의 진한 지점에서 4.22:1로 AA에 못 미친다.
-     색조·채도는 --muted와 같고 명도만 낮춰 4.75:1을 확보한 값. */
-  /* mesh가 없는 곳에서는 계속 --muted를 쓴다 */
   --muted-on-mesh: #63625d;
   --faint: #b0afa9;
   --line: #ececea;
@@ -16,28 +13,18 @@
   --shadow: 0 20px 60px -20px rgba(255, 90, 90, 0.25);
   --mono: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  /* 유리질(glassmorphism). 값은 사이드바 확장 프로그램(sidebar.css)에서 그대로 가져왔다.
-     면이 넓을수록 같은 재질로 보이려면 blur가 커야 한다는 규칙도 같이 따른다:
-     넓은 카드 14px / 중간 표면 10~12px / 영상 위 작은 오버레이 8px. */
-  --glass-wide: rgba(255, 255, 255, 0.68);   /* 사이드바 카드 본체 */
-  --glass-blur: blur(14px) saturate(1.2);    /* 사이드바 카드 본체에 걸린 값 */
-  --glass-mid: rgba(255, 255, 255, 0.55);    /* 사이드바 헤더 버튼 판 */
-  --glass-thin: rgba(255, 255, 255, 0.45);   /* 사이드바 줌 슬라이더 */
-  --glass-edge: rgba(255, 255, 255, 0.5);    /* 사이드바 영상 프레임 테두리 */
+  --glass-wide: rgba(255, 255, 255, 0.68);
+  --glass-blur: blur(14px) saturate(1.2);
+  --glass-mid: rgba(255, 255, 255, 0.55);
+  --glass-thin: rgba(255, 255, 255, 0.45);
+  --glass-edge: rgba(255, 255, 255, 0.5);
   --glass-edge-strong: rgba(255, 255, 255, 0.7);
-  /* 유리 윗면 1px 하이라이트 */
   --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  /* 흰 유리면 위에서는 흰 테두리가 사라지므로, 경계는 이 옅은 코랄 헤어라인이 대신 잡는다 */
   --glass-hair: 0 0 0 1px rgba(255, 225, 210, 0.7);
-  /* 두 겹: 크게 퍼지는 그림자가 띄우고 얕은 그림자가 접지면을 잡는다 */
   --glass-lift: 0 20px 40px -20px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.07);
   --glass-grad: linear-gradient(135deg, #ffd6ba, #ffb3c4, #ffd6ba);
 }
 
-/* 1px 그라디언트 테두리 선. 그라디언트를 가득 깔고 가운데(content-box)를 마스크로 파낸다.
-   마스크를 요소 자신에 걸면 그 안쪽이 backdrop root가 되어 backdrop-filter가 페이지를
-   볼 수 없게 되므로(투명해지지만 흐려지지 않는다) 반드시 가짜 요소에만 건다.
-   전역 * 선택자는 가짜 요소를 잡지 않으므로 box-sizing을 여기서 따로 지정한다. */
 .glass-rim::after {
   content: "";
   position: absolute;
@@ -61,7 +48,6 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
-/* 폼 컨트롤은 기본적으로 OS 폰트를 쓰므로 명시적으로 body(Pretendard)를 상속시킨다 */
 button, input, select, textarea, optgroup { font-family: inherit; }
 
 body {
@@ -70,9 +56,6 @@ body {
   color: var(--ink);
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
-  /* mesh가 좌우로 넘치는 것만 잘라낸다. hidden은 body를 스크롤 컨테이너로 만들어서
-     (한 축이 visible이 아니면 다른 축의 visible이 auto로 계산된다) 안쪽 sticky가
-     스크롤을 감지하지 못한다. clip은 스크롤 컨테이너를 만들지 않으므로 nav가 붙어 있다. */
   overflow-x: clip;
 }
 
@@ -106,8 +89,6 @@ body {
     radial-gradient(circle at 72% 35%, #ffb3c4 0%, transparent 55%);
 }
 
-/* Features·Onboarding 카드 뒤 mesh. 뒤가 단색이면 반투명 흰색을 얹어도 색이 같아져
-   유리질이 보이지 않는다. 본문을 읽는 구간이라 opacity는 절반 수준으로 낮췄다. */
 .mesh-features {
   top: 150px;
   left: 50%;
@@ -149,10 +130,6 @@ nav.wrap {
   z-index: 50;
 }
 
-/* 유리판은 가짜 요소가 그린다. nav.wrap 자신에 배경을 주면 1120px 콘텐츠 폭에서
-   끊겨 좌우로 페이지 배경이 드러난다. 가짜 요소를 100vw로 늘려 전체 폭을 덮는다.
-   .scrolled가 붙기 전에는 opacity 0이라 칠해지지 않고, 따라서 blur도 걸리지 않는다.
-   맨 위에서는 nav가 히어로 mesh 위에 그냥 얹혀 있어야 자연스럽기 때문이다. */
 nav.wrap::before {
   content: "";
   position: absolute;
@@ -173,12 +150,11 @@ nav.wrap::before {
 }
 nav.wrap.scrolled::before { opacity: 1; }
 
-.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; text-decoration: none; }
 .brand img { width: 44px; height: 44px; display: block; }
 
 .nav-actions { display: flex; align-items: center; gap: 10px; }
 
-/* 두 버튼은 한 세트다. 재질(blur·알파·하이라이트)은 공유하고 색만 아래에서 갈린다 */
 .nav-login,
 .nav-cta {
   display: inline-flex;
@@ -188,7 +164,6 @@ nav.wrap.scrolled::before { opacity: 1; }
   font-size: 12.5px;
   font-weight: 600;
   text-decoration: none;
-  /* 좁은 화면에서 글자가 쪼개지며 알약이 찌그러지는 것을 막는다 */
   white-space: nowrap;
   border: none;
   backdrop-filter: blur(8px);
@@ -196,7 +171,6 @@ nav.wrap.scrolled::before { opacity: 1; }
   transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
-/* 색만 다른 두 변주. 아래로만 퍼지는 그림자라 윤곽선처럼 보이지 않는다 */
 .nav-login {
   background: rgba(255, 255, 255, 0.6);
   color: var(--ink);
@@ -261,9 +235,7 @@ h1 em {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  /* 버튼 색과 같은 계열의 코랄 그림자. 무채색 그림자는 이 팔레트에서 탁해 보인다. */
   box-shadow: 0 10px 24px -10px rgba(239, 77, 111, 0.45);
-  /* 그라디언트 배경은 전환되지 않으므로 위치와 그림자만 전환한다 */
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -12px rgba(239, 77, 111, 0.55); }
@@ -272,7 +244,6 @@ h1 em {
   font-size: 14px;
   font-weight: 600;
   color: var(--muted);
-  /* text-decoration은 a의 브라우저 기본 밑줄을 막기 위해 남긴다 */
   text-decoration: none;
 }
 .btn-secondary:hover { color: var(--coral-deep); }
@@ -285,7 +256,6 @@ h1 em {
 .browser {
   position: absolute;
   inset: 0;
-  /* 순백이면 카드의 흰색 0.68 + blur가 얹혀도 결과가 같아 유리질이 보이지 않는다 */
   background:
     radial-gradient(125% 120% at 96% 30%, #fff0e7 0%, #fff8f4 46%, transparent 80%),
     #fff;
@@ -297,7 +267,6 @@ h1 em {
 
 .browser-bar { height: 38px; display: flex; align-items: center; gap: 6px; padding: 0 14px; border-bottom: 1px solid var(--line); }
 .browser-bar span { width: 8px; height: 8px; border-radius: 50%; }
-/* macOS 신호등의 색조를 유지하고 채도만 낮춘 파스텔 */
 .browser-bar span:nth-child(1) { background: #e4908b; }
 .browser-bar span:nth-child(2) { background: #e5c276; }
 .browser-bar span:nth-child(3) { background: #7dca88; }
@@ -317,7 +286,6 @@ h1 em {
   bottom: 20px;
   left: 28px;
   font-size: 12px;
-  /* .mono의 600을 덮어 얇게 */
   font-weight: 500;
   color: var(--faint);
 }
@@ -327,7 +295,6 @@ h1 em {
   top: 64px;
   right: 22px;
   width: 210px;
-  /* 실제 사이드바 카드와 같은 유리면 */
   background: var(--glass-wide);
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
@@ -345,8 +312,6 @@ h1 em {
 }
 .demo-card:active { cursor: grabbing; }
 
-/* 유리면 위에서는 거의 흰 선(#f2f1ee)이 뒤에 비치는 밝은 배경에 묻힌다.
-   사이드바와 같이 옅은 먹색으로 바꿔 어떤 배경 위에서도 구분선이 남게 한다. */
 .demo-card-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid rgba(70, 66, 62, 0.12); }
 .demo-card-brand { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; color: var(--ink); }
 .demo-card-brand img { width: 18px; height: 18px; border-radius: 5px; pointer-events: none; display: block; }
@@ -361,8 +326,6 @@ h1 em {
   line-height: 1.5;
   color: #52514c;
 }
-/* 3px 폭에서는 가로 그라디언트가 보이지 않으므로 방향만 세로로 둔다.
-   팔레트 변수를 그대로 쓰고 opacity로만 농도를 낮췄다. */
 .demo-sentence::before {
   content: "";
   position: absolute;
@@ -377,7 +340,6 @@ h1 em {
 
 .demo-video {
   position: relative; aspect-ratio: 18 / 25;
-  /* 사이드바는 이 배경을 단색으로 두지만, 여기서는 카드 안쪽까지 같은 유리로 보이게 한다 */
   background: var(--glass-mid);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -392,7 +354,6 @@ h1 em {
 .demo-play {
   position: absolute; bottom: 8px; right: 8px;
   width: 26px; height: 26px; border-radius: 50%;
-  /* 사이드바 재생 버튼과 같은 값 */
   background: rgba(255, 122, 80, 0.55); color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(8px);
@@ -403,9 +364,6 @@ h1 em {
 
 .demo-hint { margin: 0; font-size: 10px; color: var(--faint); text-align: center; }
 
-/* mesh(position: absolute)의 좌표 기준을 섹션으로 잡는다. z-index는 auto로 두어
-   stacking context를 만들지 않으므로, z-index -1인 mesh는 body 배경 위·섹션 내용
-   아래에 그려지고 카드의 backdrop-filter가 그것을 그대로 샘플링한다. */
 section.wrap { padding: 88px 32px; position: relative; }
 .section-head { max-width: 560px; margin: 0 0 52px; }
 .section-head h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.01em; margin: 0 0 14px; line-height: 1.3; }
@@ -415,11 +373,9 @@ section.wrap { padding: 88px 32px; position: relative; }
 .feature {
   position: relative;
   overflow: hidden;
-  /* 뒤 mesh가 반투명 흰색을 통해 배어 나온다 */
   background: var(--glass-mid);
   backdrop-filter: blur(12px) saturate(1.15);
   -webkit-backdrop-filter: blur(12px) saturate(1.15);
-  /* 테두리는 .glass-rim::after가 그린다. 1px 자리는 남겨 크기가 달라지지 않게 한다 */
   border: 1px solid transparent;
   border-radius: 18px;
   padding: 28px 26px 30px;
@@ -474,8 +430,6 @@ section.wrap { padding: 88px 32px; position: relative; }
   grid-template-columns: 1.05fr 1fr;
   gap: 12px;
   align-items: center;
-  /* backdrop-filter를 일부러 걸지 않는다: 걸면 이 요소가 backdrop root가 되어
-     안쪽 .ob-card가 바깥 mesh를 볼 수 없다 */
   background: var(--glass-thin);
   border: 1px solid transparent;
   border-radius: 24px;
@@ -543,9 +497,6 @@ section.wrap { padding: 88px 32px; position: relative; }
   box-shadow: var(--glass-lift);
 }
 
-/* mesh는 .closer의 자식(z-index 0)이라 background에 유리면을 깔면 mesh가 덮어 버린다.
-   그래서 mesh보다 뒤에 그려지는 ::after에 backdrop-filter를 걸고, 글자는 z-index 1로
-   올려 유리면 위에 남긴다. veil을 얕게 둬서 코랄 mesh 색이 죽지 않게 한다 */
 .closer::after {
   content: "";
   position: absolute;
@@ -562,35 +513,39 @@ section.wrap { padding: 88px 32px; position: relative; }
 .closer .btn-primary { position: relative; z-index: 1; }
 
 footer.wrap {
-  /* 페이지 끝이라 아래쪽은 위쪽보다 작게 둔다 */
-  padding: clamp(88px, 9vw, 128px) 32px clamp(62px, 6.5vw, 92px);
+  padding: clamp(32px, 4vw, 48px) 32px clamp(62px, 6.5vw, 92px);
   border-top: 1px solid var(--line);
   margin-top: clamp(40px, 5vw, 72px);
   font-size: 13px;
   color: var(--faint);
 }
 .footer-cols {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   gap: clamp(48px, 7vw, 120px);
 }
-.footer-info { display: flex; flex-direction: column; gap: clamp(20px, 2.2vw, 30px); }
-footer .brand { font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0.02em; }
-.footer-mail { color: var(--muted); text-decoration: none; transition: color 0.15s ease; }
-.footer-mail:hover { color: var(--coral-deep); }
+.footer-info { display: flex; flex-direction: column; gap: clamp(16px, 1.8vw, 22px); }
+.footer-brand-group { display: flex; flex-direction: column; gap: 6px; }
+footer .brand { font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: 0.02em; }
+.footer-tagline { color: var(--muted); }
 .footer-credit { font-size: 12px; color: var(--faint); }
 
-.footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: clamp(18px, 2vw, 26px); }
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+  gap: clamp(8px, 1vw, 12px);
+}
 .footer-links a { color: var(--faint); text-decoration: none; transition: color 0.15s ease; }
 .footer-links a:hover { color: var(--coral-deep); }
 
 @media (max-width: 680px) {
-  .footer-cols { flex-direction: column; gap: clamp(44px, 11vw, 60px); }
-  .footer-links { align-items: flex-start; }
+  .footer-cols { display: flex; flex-direction: column; gap: clamp(44px, 11vw, 60px); }
+  .footer-links { align-items: flex-start; justify-content: flex-start; height: auto; gap: clamp(18px, 4vw, 26px); }
 }
 
-/* 로고 + 버튼 2개가 한 줄에 들어가야 하는 폭. 글자 크기와 여백만 조인다 */
 @media (max-width: 620px) {
   nav.wrap { padding-left: 16px; padding-right: 16px; }
   .brand { font-size: 16px; gap: 6px; }
@@ -604,3 +559,68 @@ footer .brand { font-size: 13px; font-weight: 400; color: var(--muted); letter-s
   h1 { font-size: 34px; }
   .stage { height: 380px; }
 }
+
+.footer-biz { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--faint); }
+.footer-biz p { margin: 0; }
+
+.pricing-grid { display: flex; justify-content: center; }
+.pricing-card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 380px;
+  background: var(--glass-mid);
+  backdrop-filter: blur(12px) saturate(1.15);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  padding: 36px 32px;
+  box-shadow: var(--glass-lift), var(--glass-sheen);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.pricing-badge {
+  align-self: flex-start;
+  background: linear-gradient(135deg, var(--coral), var(--coral-deep));
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.pricing-price { display: flex; align-items: baseline; gap: 6px; }
+.pricing-price strong { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
+.pricing-price span { font-size: 15px; color: var(--muted); font-weight: 600; }
+.pricing-desc { font-size: 14px; line-height: 1.7; color: var(--muted); margin: 0; }
+.pricing-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pricing-features li { font-size: 13.5px; color: var(--ink); padding-left: 22px; position: relative; }
+.pricing-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--coral-deep);
+  font-weight: 700;
+}
+.pricing-btn { justify-content: center; width: 100%; border: none; cursor: pointer; font-family: inherit; }
+
+.legal-page { padding-top: 48px; padding-bottom: 96px; }
+.legal-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--glass-mid);
+  backdrop-filter: blur(12px) saturate(1.15);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  padding: 48px clamp(24px, 5vw, 56px);
+  box-shadow: var(--glass-sheen);
+}
+.legal-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.legal-head h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.01em; margin: 0; }
+.legal-updated { font-size: 13px; color: var(--faint); }
+.legal-body h2 { font-size: 17px; font-weight: 700; margin: 28px 0 10px; }
+.legal-body h2:first-child { margin-top: 0; }
+.legal-body p { font-size: 14.5px; line-height: 1.8; color: var(--muted); margin: 0 0 12px; }
+.legal-body ul { margin: 0 0 12px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.legal-body li { font-size: 14.5px; line-height: 1.75; color: var(--muted); }
+.legal-body a { color: var(--coral-deep); text-decoration: underline; }

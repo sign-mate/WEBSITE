@@ -9,7 +9,6 @@ import DuplicateAccountModal from "./DuplicateAccountModal";
 interface Prefill {
   email?: string;
   name?: string;
-  /** provider === "GOOGLE"일 때 필수: 로그인 단계에서 받은 idToken을 그대로 다시 제출해야 함 */
   idToken?: string;
 }
 
@@ -33,7 +32,6 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
   const [error, setError] = useState<string | null>(null);
   const [duplicate, setDuplicate] = useState<{ message: string } | null>(null);
 
-  // 구글 가입은 비밀번호가 필요 없으므로(서버가 받지도 않음) 비밀번호 검증에서 제외
   const canSubmit =
     name.trim().length > 0 &&
     (isGoogle || (email.trim().length > 0 && isValidPassword(password) && passwordsMatch(password, confirm))) &&
@@ -62,7 +60,6 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
       onDone();
     } catch (e) {
       if (e instanceof ApiError && (e.code === "USER-006" || e.code === "USER-007")) {
-        // 이름+전화번호 기준 다른 방식으로 이미 가입된 계정 존재
         setDuplicate({ message: e.message });
         return;
       }

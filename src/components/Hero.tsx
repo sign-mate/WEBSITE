@@ -27,7 +27,6 @@ export default function Hero() {
       stopIdle();
       const target = e.target as HTMLElement;
       if (target.closest("button")) return;
-      // only the header should initiate dragging
       if (!target.closest(".demo-card-head")) return;
       dragging.current = true;
       const r = card.getBoundingClientRect();

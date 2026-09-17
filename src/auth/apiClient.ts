@@ -1,9 +1,5 @@
 import type { ApiEnvelope } from "./types";
 
-/**
- * 백엔드 응답 형태: { success, data?, error?: { code, message } }
- * (com.signmate.backend.global.response.ApiResponse)
- */
 export class ApiError extends Error {
   code: string;
   constructor(code: string, message: string) {
@@ -12,11 +8,10 @@ export class ApiError extends Error {
   }
 }
 
-// 백엔드 CORS/포트 설정에 맞춰 .env에서 오버라이드하세요 (예: VITE_API_BASE_URL=https://api.signmate.team/api/v1)
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api/v1";
 
 interface RequestOptions {
-  auth?: boolean; // true면 Authorization 헤더 부착
+  auth?: boolean;
 }
 
 export async function apiPost<T>(
@@ -45,8 +40,6 @@ export async function apiPost<T>(
 
   return json.data as T;
 }
-
-// ---- 토큰 저장 (백엔드가 JWT를 발급하므로 여기서 관리) --------------------------
 
 const ACCESS_TOKEN_KEY = "signmate_access_token";
 const REFRESH_TOKEN_KEY = "signmate_refresh_token";

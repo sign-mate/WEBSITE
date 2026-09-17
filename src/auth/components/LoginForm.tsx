@@ -25,10 +25,6 @@ export default function LoginForm({ onLoginSuccess, onNeedSignup, onGoFindId, on
       setTokens(accessToken, refreshToken);
       onLoginSuccess();
     } catch (e) {
-      // 백엔드가 보안상 "계정 없음"과 "비밀번호 틀림"을 구분해주지 않고
-      // 둘 다 USER-004(INVALID_CREDENTIALS)로 통일해서 내려줍니다.
-      // 그래서 스펙 문서의 "계정 없으면 자동으로 회원가입 폼 이동"은 여기서는
-      // 할 수 없고, 대신 아래 "회원가입" 링크로 사용자가 직접 이동하게 했습니다.
       setError(e instanceof ApiError ? e.message : "로그인에 실패했습니다.");
     } finally {
       setLoading(false);
@@ -72,7 +68,6 @@ export default function LoginForm({ onLoginSuccess, onNeedSignup, onGoFindId, on
             onLoginSuccess();
             return;
           }
-          // 계정 없음 → 구글 회원가입 폼으로 이동 (이메일/이름 자동 입력)
           onNeedSignup("GOOGLE", { email: res.email, name: res.name, idToken: res.idToken });
         }}
       />

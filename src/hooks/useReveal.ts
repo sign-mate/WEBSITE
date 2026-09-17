@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-/**
- * Fades an element in the first time it scrolls into view.
- * Falls back to always-visible if IntersectionObserver isn't available,
- * and force-reveals after 2s as a safety net so content can never get
- * stuck invisible.
- */
 export function useReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(false);

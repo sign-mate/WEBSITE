@@ -16,11 +16,6 @@ type View =
   | { name: "mypage" }
   | { name: "change-password" };
 
-/**
- * 라우터에 종속되지 않는 간단한 내부 상태 기반 플로우입니다.
- * 실제 프로젝트에 라우터(react-router 등)가 있다면, 이 컴포넌트의 view state를
- * URL 기반 라우팅으로 바꿔서 각 화면을 개별 페이지/경로에 연결하세요.
- */
 export default function AuthFlow({ initialView = "login" as View["name"] }) {
   const [view, setView] = useState<View>({ name: initialView } as View);
 

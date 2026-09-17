@@ -3,14 +3,13 @@ import { sendSmsCode, verifySmsCode } from "../api";
 import { ApiError } from "../apiClient";
 import { useCountdown } from "../hooks/useCountdown";
 
-const CODE_TTL_MS = 3 * 60 * 1000; // 3분
-const RESEND_COOLDOWN_MS = 30 * 1000; // 30초
+const CODE_TTL_MS = 3 * 60 * 1000;
+const RESEND_COOLDOWN_MS = 30 * 1000;
 const MAX_RESEND = 5;
 
 interface Props {
   phone: string;
   onPhoneChange: (value: string) => void;
-  /** 인증 성공 시 호출. 백엔드가 phone 기준으로 서버에서 10분간 인증 상태를 들고 있으므로 토큰은 필요 없음. */
   onVerified: () => void;
   verified: boolean;
   disabled?: boolean;
@@ -45,8 +44,6 @@ export default function SmsVerification({
       setError("인증코드 발송 횟수를 초과했습니다. 잠시 후 다시 시도해주세요.");
       return;
     }
-    // 쿨다운 중에는 버튼을 눌러도 발송하지 않는다. 버튼을 disabled로 잠가 두면
-    // 왜 안 되는지 알기 어려워서, 누를 수는 있게 두고 남은 시간을 알려준다.
     if (cooldownActive) {
       setError(`${cooldownIn}초 후에 다시 시도해주세요.`);
       return;
@@ -59,7 +56,6 @@ export default function SmsVerification({
       setResendCount((c) => c + 1);
       setCode("");
     } catch (e) {
-      // SMS-003 TOO_MANY_SEND_REQUESTS / SMS-004 DAILY_SEND_LIMIT_EXCEEDED / SMS-002 SMS_SEND_FAILED
       setError(e instanceof ApiError ? e.message : "인증코드 발송에 실패했습니다.");
     } finally {
       setSending(false);
@@ -77,7 +73,6 @@ export default function SmsVerification({
       await verifySmsCode(phone, code);
       onVerified();
     } catch (e) {
-      // SMS-001 INVALID_VERIFICATION_CODE
       setError(e instanceof ApiError ? e.message : "인증에 실패했습니다.");
     } finally {
       setVerifying(false);

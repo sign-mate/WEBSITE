@@ -12,13 +12,11 @@ interface Props {
 export default function ResetPasswordForm({ onBack, onDone }: Props) {
   const [step, setStep] = useState<1 | 2>(1);
 
-  // 1단계: 본인 인증
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [verified, setVerified] = useState(false);
 
-  // 2단계: 새 비밀번호
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -33,7 +31,6 @@ export default function ResetPasswordForm({ onBack, onDone }: Props) {
       await resetPassword(email, name, phone, password);
       setDone(true);
     } catch (e) {
-      // USER-009(GOOGLE_ACCOUNT_NO_PASSWORD) 포함 — 백엔드 메시지 그대로 노출
       setError(e instanceof ApiError ? e.message : "비밀번호 재설정에 실패했습니다.");
     } finally {
       setSubmitting(false);

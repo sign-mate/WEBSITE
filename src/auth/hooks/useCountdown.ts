@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-/** targetMs 시점까지 남은 초를 반환. 0이 되면 멈춤. */
 export function useCountdown(targetMs: number | null) {
   const [remaining, setRemaining] = useState(0);
   const frame = useRef<number | undefined>(undefined);

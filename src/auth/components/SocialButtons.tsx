@@ -10,7 +10,6 @@ interface Props {
   disabled?: boolean;
 }
 
-/** Google 4색 G 로고 (공식 브랜드 에셋 경로) */
 function GoogleIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
@@ -34,7 +33,6 @@ function GoogleIcon() {
   );
 }
 
-/** 카카오톡 말풍선 (검정 단색) */
 function KakaoIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -46,11 +44,6 @@ function KakaoIcon() {
   );
 }
 
-/**
- * 카카오는 백엔드(SERVER)에 /auth/kakao가 아직 없어서 disabled로 노출만 해둡니다.
- * 백엔드가 준비되면 handleGoogle과 동일한 패턴으로 핸들러를 붙이고
- * disabled와 "준비 중" 배지를 제거하세요.
- */
 export default function SocialButtons({ onResult, onError, disabled }: Props) {
   const [loading, setLoading] = useState(false);
 

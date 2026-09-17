@@ -1,4 +1,3 @@
-/** 백엔드 User.Provider enum과 동일 (카카오는 아직 백엔드 미구현) */
 export type Provider = "LOCAL" | "GOOGLE";
 
 export interface ApiEnvelope<T> {
