@@ -1,8 +1,10 @@
 import { apiPost } from "./apiClient";
+import { KAKAO_REDIRECT_URI } from "./kakaoAuth";
 import type {
   FindEmailResponse,
-  GoogleLoginResponse,
+  SocialLoginResponse,
   GoogleSignupPayload,
+  KakaoSignupPayload,
   SignupPayload,
   TokenResponse,
 } from "./types";
@@ -23,12 +25,20 @@ export async function login(email: string, password: string): Promise<TokenRespo
   return apiPost<TokenResponse>("/auth/login", { email, password });
 }
 
-export async function googleLogin(idToken: string): Promise<GoogleLoginResponse> {
-  return apiPost<GoogleLoginResponse>("/auth/google", { idToken });
+export async function googleLogin(idToken: string): Promise<SocialLoginResponse> {
+  return apiPost<SocialLoginResponse>("/auth/google", { idToken });
 }
 
 export async function googleSignup(payload: GoogleSignupPayload): Promise<TokenResponse> {
   return apiPost<TokenResponse>("/auth/google/signup", payload);
+}
+
+export async function kakaoLogin(code: string): Promise<SocialLoginResponse> {
+  return apiPost<SocialLoginResponse>("/auth/kakao", { code, redirectUri: KAKAO_REDIRECT_URI });
+}
+
+export async function kakaoSignup(payload: KakaoSignupPayload): Promise<TokenResponse> {
+  return apiPost<TokenResponse>("/auth/kakao/signup", payload);
 }
 
 export async function refreshTokens(refreshToken: string): Promise<TokenResponse> {

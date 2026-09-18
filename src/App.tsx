@@ -7,6 +7,7 @@ import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import RefundPolicyPage from "./pages/RefundPolicyPage";
 import AuthFlow from "./auth/AuthFlow";
+import KakaoCallback from "./auth/KakaoCallback";
 
 export default function App() {
   const [authOpen, setAuthOpen] = useState(false);
@@ -55,6 +56,7 @@ export default function App() {
             </Layout>
           }
         />
+        <Route path="/oauth/kakao/callback" element={<KakaoCallback />} />
       </Routes>
 
       {authOpen && (

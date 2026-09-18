@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { getGoogleIdToken } from "../googleAuth";
-import { googleLogin } from "../api";
+import { getKakaoAuthCode } from "../kakaoAuth";
+import { googleLogin, kakaoLogin } from "../api";
 import { ApiError } from "../apiClient";
-import type { GoogleLoginResponse } from "../types";
+import type { SocialLoginResponse } from "../types";
+
+export type SocialResult = SocialLoginResponse & { idToken?: string };
 
 interface Props {
-  onResult: (result: GoogleLoginResponse & { idToken: string }) => void;
+  onResult: (provider: "GOOGLE" | "KAKAO", result: SocialResult) => void;
   onError: (message: string) => void;
   disabled?: boolean;
 }
@@ -45,32 +48,54 @@ function KakaoIcon() {
 }
 
 export default function SocialButtons({ onResult, onError, disabled }: Props) {
-  const [loading, setLoading] = useState(false);
+  const [loadingProvider, setLoadingProvider] = useState<"GOOGLE" | "KAKAO" | null>(null);
 
   const handleGoogle = async () => {
-    setLoading(true);
+    setLoadingProvider("GOOGLE");
     try {
       const idToken = await getGoogleIdToken();
       const res = await googleLogin(idToken);
-      onResult({ ...res, idToken });
+      onResult("GOOGLE", { ...res, idToken });
     } catch (e) {
       onError(e instanceof ApiError ? e.message : e instanceof Error ? e.message : "구글 인증에 실패했습니다.");
     } finally {
-      setLoading(false);
+      setLoadingProvider(null);
+    }
+  };
+
+  const handleKakao = async () => {
+    setLoadingProvider("KAKAO");
+    try {
+      const code = await getKakaoAuthCode();
+      const res = await kakaoLogin(code);
+      onResult("KAKAO", res);
+    } catch (e) {
+      onError(e instanceof ApiError ? e.message : e instanceof Error ? e.message : "카카오 인증에 실패했습니다.");
+    } finally {
+      setLoadingProvider(null);
     }
   };
 
   return (
     <div className="social-row">
-      <button type="button" className="btn-social kakao" disabled aria-label="카카오로 계속하기 (준비 중)">
+      <button
+        type="button"
+        className="btn-social kakao"
+        disabled={disabled || loadingProvider !== null}
+        onClick={handleKakao}
+      >
         <KakaoIcon />
-        카카오로 계속하기
-        <span className="social-soon">준비 중</span>
+        {loadingProvider === "KAKAO" ? "확인 중..." : "카카오로 계속하기"}
       </button>
 
-      <button type="button" className="btn-social google" disabled={disabled || loading} onClick={handleGoogle}>
+      <button
+        type="button"
+        className="btn-social google"
+        disabled={disabled || loadingProvider !== null}
+        onClick={handleGoogle}
+      >
         <GoogleIcon />
-        {loading ? "확인 중..." : "Google로 계속하기"}
+        {loadingProvider === "GOOGLE" ? "확인 중..." : "Google로 계속하기"}
       </button>
     </div>
   );

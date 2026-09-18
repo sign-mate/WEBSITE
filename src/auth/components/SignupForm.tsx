@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Provider } from "../types";
-import { googleSignup, signup } from "../api";
+import { googleSignup, kakaoSignup, signup } from "../api";
 import { ApiError, setTokens } from "../apiClient";
 import SmsVerification from "./SmsVerification";
 import PasswordFields, { isValidPassword, passwordsMatch } from "./PasswordFields";
@@ -10,6 +10,7 @@ interface Prefill {
   email?: string;
   name?: string;
   idToken?: string;
+  accessToken?: string;
 }
 
 interface Props {
@@ -21,6 +22,8 @@ interface Props {
 
 export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: Props) {
   const isGoogle = provider === "GOOGLE";
+  const isKakao = provider === "KAKAO";
+  const isSocial = isGoogle || isKakao;
 
   const [name, setName] = useState(prefill?.name ?? "");
   const [email, setEmail] = useState(prefill?.email ?? "");
@@ -34,7 +37,7 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
 
   const canSubmit =
     name.trim().length > 0 &&
-    (isGoogle || (email.trim().length > 0 && isValidPassword(password) && passwordsMatch(password, confirm))) &&
+    (isSocial || (email.trim().length > 0 && isValidPassword(password) && passwordsMatch(password, confirm))) &&
     verified;
 
   const handleSubmit = async () => {
@@ -53,13 +56,24 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
           phone,
         });
         setTokens(accessToken, refreshToken);
+      } else if (isKakao) {
+        if (!prefill?.accessToken) {
+          setError("카카오 인증 정보가 없습니다. 로그인 화면에서 다시 시도해주세요.");
+          return;
+        }
+        const { accessToken, refreshToken } = await kakaoSignup({
+          accessToken: prefill.accessToken,
+          name,
+          phone,
+        });
+        setTokens(accessToken, refreshToken);
       } else {
         const { accessToken, refreshToken } = await signup({ email, password, name, phone });
         setTokens(accessToken, refreshToken);
       }
       onDone();
     } catch (e) {
-      if (e instanceof ApiError && (e.code === "USER-006" || e.code === "USER-007")) {
+      if (e instanceof ApiError && (e.code === "USER-006" || e.code === "USER-007" || e.code === "USER-012")) {
         setDuplicate({ message: e.message });
         return;
       }
@@ -71,7 +85,7 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
 
   return (
     <div className="auth-card">
-      <h2 className="auth-title">{isGoogle ? "간편 회원가입" : "회원가입"}</h2>
+      <h2 className="auth-title">{isSocial ? "간편 회원가입" : "회원가입"}</h2>
 
       <div className="field">
         <label className="field-label">이름</label>
@@ -79,11 +93,11 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
           className="field-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          disabled={isGoogle && !!prefill?.name}
+          disabled={isSocial && !!prefill?.name}
         />
       </div>
 
-      {!isGoogle && (
+      {!isSocial && (
         <>
           <div className="field">
             <label className="field-label">이메일</label>
@@ -98,7 +112,7 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
         </>
       )}
 
-      {isGoogle && email && (
+      {isSocial && email && (
         <div className="field">
           <label className="field-label">이메일</label>
           <input className="field-input" value={email} disabled />

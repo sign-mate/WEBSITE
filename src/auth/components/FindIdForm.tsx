@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { findEmail } from "../api";
 import { ApiError } from "../apiClient";
+import type { FindEmailResponse } from "../types";
 import SmsVerification from "./SmsVerification";
 
 interface Props {
   onBack: () => void;
 }
 
-const PROVIDER_LABEL = { LOCAL: "일반", GOOGLE: "구글" } as const;
+const PROVIDER_LABEL = { LOCAL: "일반", GOOGLE: "구글", KAKAO: "카카오" } as const;
 
 export default function FindIdForm({ onBack }: Props) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [verified, setVerified] = useState(false);
-  const [result, setResult] = useState<{ email: string; provider: "LOCAL" | "GOOGLE" } | null>(null);
+  const [result, setResult] = useState<FindEmailResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 

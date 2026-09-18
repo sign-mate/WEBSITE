@@ -10,7 +10,11 @@ import "./auth.css";
 
 type View =
   | { name: "login" }
-  | { name: "signup"; provider: Provider; prefill?: { email?: string; name?: string; idToken?: string } }
+  | {
+      name: "signup";
+      provider: Provider;
+      prefill?: { email?: string; name?: string; idToken?: string; accessToken?: string };
+    }
   | { name: "find-id" }
   | { name: "reset-password" }
   | { name: "mypage" }

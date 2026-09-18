@@ -1,4 +1,4 @@
-export type Provider = "LOCAL" | "GOOGLE";
+export type Provider = "LOCAL" | "GOOGLE" | "KAKAO";
 
 export interface ApiEnvelope<T> {
   success: boolean;
@@ -11,12 +11,14 @@ export interface TokenResponse {
   refreshToken: string;
 }
 
-export interface GoogleLoginResponse {
+export interface SocialLoginResponse {
   registered: boolean;
   accessToken?: string;
   refreshToken?: string;
   email?: string;
   name?: string;
+  // Kakao only, present when registered=false: forward to /auth/kakao/signup.
+  kakaoAccessToken?: string;
 }
 
 export interface FindEmailResponse {
@@ -33,6 +35,12 @@ export interface SignupPayload {
 
 export interface GoogleSignupPayload {
   idToken: string;
+  name: string;
+  phone: string;
+}
+
+export interface KakaoSignupPayload {
+  accessToken: string;
   name: string;
   phone: string;
 }
