@@ -1,10 +1,11 @@
-import { apiPost } from "./apiClient";
+import { apiGet, apiPost, apiPut } from "./apiClient";
 import { KAKAO_REDIRECT_URI } from "./kakaoAuth";
 import type {
   FindEmailResponse,
   SocialLoginResponse,
   GoogleSignupPayload,
   KakaoSignupPayload,
+  MyPageInfo,
   SignupPayload,
   TokenResponse,
 } from "./types";
@@ -56,4 +57,12 @@ export async function resetPassword(
   newPassword: string
 ): Promise<void> {
   await apiPost<void>("/auth/reset-password", { email, name, phone, newPassword });
+}
+
+export async function getMyInfo(): Promise<MyPageInfo> {
+  return apiGet<MyPageInfo>("/users/me", { auth: true });
+}
+
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
+  await apiPut<void>("/users/me/password", { currentPassword, newPassword }, { auth: true });
 }

@@ -20,14 +20,22 @@ type View =
   | { name: "mypage" }
   | { name: "change-password" };
 
-export default function AuthFlow({ initialView = "login" as View["name"] }) {
+interface Props {
+  initialView?: View["name"];
+  onAuthSuccess?: () => void;
+}
+
+export default function AuthFlow({ initialView = "login", onAuthSuccess }: Props) {
   const [view, setView] = useState<View>({ name: initialView } as View);
 
   switch (view.name) {
     case "login":
       return (
         <LoginForm
-          onLoginSuccess={() => setView({ name: "mypage" })}
+          onLoginSuccess={() => {
+            setView({ name: "mypage" });
+            onAuthSuccess?.();
+          }}
           onNeedSignup={(provider, prefill) => setView({ name: "signup", provider, prefill })}
           onGoFindId={() => setView({ name: "find-id" })}
           onGoResetPassword={() => setView({ name: "reset-password" })}
@@ -39,7 +47,10 @@ export default function AuthFlow({ initialView = "login" as View["name"] }) {
         <SignupForm
           provider={view.provider}
           prefill={view.prefill}
-          onDone={() => setView({ name: "mypage" })}
+          onDone={() => {
+            setView({ name: "mypage" });
+            onAuthSuccess?.();
+          }}
           onGoToLogin={() => setView({ name: "login" })}
         />
       );

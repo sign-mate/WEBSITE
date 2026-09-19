@@ -8,10 +8,32 @@ import PrivacyPage from "./pages/PrivacyPage";
 import RefundPolicyPage from "./pages/RefundPolicyPage";
 import AuthFlow from "./auth/AuthFlow";
 import KakaoCallback from "./auth/KakaoCallback";
+import { clearTokens, getAccessToken } from "./auth/apiClient";
 
 export default function App() {
   const [authOpen, setAuthOpen] = useState(false);
-  const openAuth = () => setAuthOpen(true);
+  const [authView, setAuthView] = useState<"login" | "mypage">("login");
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!getAccessToken());
+
+  const openLogin = () => {
+    setAuthView("login");
+    setAuthOpen(true);
+  };
+  const openMyPage = () => {
+    setAuthView("mypage");
+    setAuthOpen(true);
+  };
+  const handleLogout = () => {
+    clearTokens();
+    setIsLoggedIn(false);
+  };
+
+  const layoutProps = {
+    isLoggedIn,
+    onLoginClick: openLogin,
+    onMyPageClick: openMyPage,
+    onLogout: handleLogout,
+  };
 
   return (
     <>
@@ -19,7 +41,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <Layout onLoginClick={openAuth}>
+            <Layout {...layoutProps}>
               <Landing />
             </Layout>
           }
@@ -27,7 +49,7 @@ export default function App() {
         <Route
           path="/pricing"
           element={
-            <Layout onLoginClick={openAuth}>
+            <Layout {...layoutProps}>
               <PricingPage />
             </Layout>
           }
@@ -35,7 +57,7 @@ export default function App() {
         <Route
           path="/terms"
           element={
-            <Layout onLoginClick={openAuth}>
+            <Layout {...layoutProps}>
               <TermsPage />
             </Layout>
           }
@@ -43,7 +65,7 @@ export default function App() {
         <Route
           path="/privacy"
           element={
-            <Layout onLoginClick={openAuth}>
+            <Layout {...layoutProps}>
               <PrivacyPage />
             </Layout>
           }
@@ -51,7 +73,7 @@ export default function App() {
         <Route
           path="/refund-policy"
           element={
-            <Layout onLoginClick={openAuth}>
+            <Layout {...layoutProps}>
               <RefundPolicyPage />
             </Layout>
           }
@@ -70,7 +92,7 @@ export default function App() {
             >
               ✕
             </button>
-            <AuthFlow />
+            <AuthFlow initialView={authView} onAuthSuccess={() => setIsLoggedIn(true)} />
           </div>
         </div>
       )}

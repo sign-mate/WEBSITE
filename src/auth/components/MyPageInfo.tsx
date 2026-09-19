@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyInfo } from "../mypageApi.mock";
+import { getMyInfo } from "../api";
 import type { MyPageInfo as MyPageInfoT } from "../types";
 
 interface Props {

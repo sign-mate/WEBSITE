@@ -19,6 +19,27 @@ export async function apiPost<T>(
   body: unknown,
   options: RequestOptions = {}
 ): Promise<T> {
+  return apiRequest<T>(path, "POST", body, options);
+}
+
+export async function apiGet<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  return apiRequest<T>(path, "GET", undefined, options);
+}
+
+export async function apiPut<T>(
+  path: string,
+  body: unknown,
+  options: RequestOptions = {}
+): Promise<T> {
+  return apiRequest<T>(path, "PUT", body, options);
+}
+
+async function apiRequest<T>(
+  path: string,
+  method: string,
+  body: unknown,
+  options: RequestOptions
+): Promise<T> {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (options.auth) {
     const token = getAccessToken();
@@ -26,9 +47,9 @@ export async function apiPost<T>(
   }
 
   const res = await fetch(`${BASE_URL}${path}`, {
-    method: "POST",
+    method,
     headers,
-    body: JSON.stringify(body),
+    body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 
   const json: ApiEnvelope<T> = await res.json();

@@ -49,4 +49,5 @@ export interface MyPageInfo {
   name: string;
   email: string;
   phone: string;
+  provider: Provider;
 }

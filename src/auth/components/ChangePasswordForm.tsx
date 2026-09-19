@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { changePassword } from "../mypageApi.mock";
+import { changePassword } from "../api";
 import PasswordFields, { passwordsMatch } from "./PasswordFields";
 
 interface Props {
