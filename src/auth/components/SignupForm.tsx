@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Provider } from "../types";
 import { googleSignup, kakaoSignup, signup } from "../api";
 import { ApiError, setTokens } from "../apiClient";
+import { getKakaoAuthCode, KAKAO_REDIRECT_URI } from "../kakaoAuth";
 import SmsVerification from "./SmsVerification";
 import PasswordFields, { isValidPassword, passwordsMatch } from "./PasswordFields";
 import DuplicateAccountModal from "./DuplicateAccountModal";
@@ -10,7 +11,6 @@ interface Prefill {
   email?: string;
   name?: string;
   idToken?: string;
-  accessToken?: string;
 }
 
 interface Props {
@@ -57,12 +57,10 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
         });
         setTokens(accessToken, refreshToken);
       } else if (isKakao) {
-        if (!prefill?.accessToken) {
-          setError("카카오 인증 정보가 없습니다. 로그인 화면에서 다시 시도해주세요.");
-          return;
-        }
+        const code = await getKakaoAuthCode();
         const { accessToken, refreshToken } = await kakaoSignup({
-          accessToken: prefill.accessToken,
+          code,
+          redirectUri: KAKAO_REDIRECT_URI,
           name,
           phone,
         });
@@ -77,7 +75,7 @@ export default function SignupForm({ provider, prefill, onDone, onGoToLogin }: P
         setDuplicate({ message: e.message });
         return;
       }
-      setError(e instanceof ApiError ? e.message : "회원가입에 실패했습니다.");
+      setError(e instanceof ApiError || e instanceof Error ? e.message : "회원가입에 실패했습니다.");
     } finally {
       setSubmitting(false);
     }
