@@ -1,18 +1,5 @@
 import { useReveal } from "../hooks/useReveal";
-
-function CursorIcon() {
-  return (
-    <svg className="illus-cursor" width="14" height="18" viewBox="0 0 14 18" fill="none" aria-hidden="true">
-      <path
-        d="M1.2 1L1.2 15.3L4.6 12.1L6.9 16.8L9.3 15.7L7 11L11.9 11L1.2 1Z"
-        fill="#1a1a1a"
-        stroke="#fff"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+import { CursorIcon, IllusLines } from "./Illus";
 
 function PinchIcon() {
   return (
@@ -25,21 +12,10 @@ function PinchIcon() {
 
 const LINE_WIDTHS = [88, 64, 92, 58, 80, 70, 86, 60, 76, 92, 66, 82];
 
-function IllusLines() {
-  return (
-    <div className="illus-lines">
-      <span className="illus-line illus-line--title" />
-      {LINE_WIDTHS.map((w, i) => (
-        <span key={i} className="illus-line" style={{ width: `${w}%` }} />
-      ))}
-    </div>
-  );
-}
-
 function DragVisual() {
   return (
     <div className="illus-stage" aria-hidden="true">
-      <IllusLines />
+      <IllusLines widths={LINE_WIDTHS} />
       <div className="illus-target illus-drag-target" />
       <div className="illus-overlay illus-overlay--drag">
         <img src="/onboarding/overlay.png" alt="" />
@@ -52,7 +28,7 @@ function DragVisual() {
 function ResizeVisual() {
   return (
     <div className="illus-stage" aria-hidden="true">
-      <IllusLines />
+      <IllusLines widths={LINE_WIDTHS} />
       <div className="illus-resize-anchor">
         <div className="illus-target illus-resize-target" />
         <div className="illus-overlay illus-overlay--resize">
@@ -67,7 +43,7 @@ function ResizeVisual() {
 function ZoomVisual() {
   return (
     <div className="illus-stage" aria-hidden="true">
-      <IllusLines />
+      <IllusLines widths={LINE_WIDTHS} />
       <div className="illus-overlay illus-overlay--zoom">
         <img src="/onboarding/overlay.png" alt="" />
         <div className="illus-video-mask">
