@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import demoVideo from "../assets/demo.webm";
 import { useReveal } from "../hooks/useReveal";
 import type { OnboardingStep } from "../types";
+import { CursorIcon, IllusLines } from "./Illus";
 
 const TABS: { title: string; body: string }[] = [
   { title: "문장을 드래그하세요", body: "아무 웹페이지에서나 텍스트를 마우스로 선택하면 자동으로 인식해요." },
@@ -16,6 +16,43 @@ const MESSAGES = [
 ];
 
 const AUTO_ADVANCE_MS = 4200;
+
+const OB_LINE_WIDTHS = [92, 84, 52, 88, 76, 90, 64, 86, 72, 60];
+
+function DragSelectVisual() {
+  return (
+    <div className="illus-stage ob-illus-stage" aria-hidden="true">
+      <IllusLines widths={OB_LINE_WIDTHS} className="illus-lines--ob" />
+      <div className="ob-highlight ob-highlight--anim" />
+      <CursorIcon className="ob-highlight-cursor ob-highlight-cursor--anim" />
+    </div>
+  );
+}
+
+function VideoRevealVisual() {
+  return (
+    <div className="illus-stage ob-illus-stage" aria-hidden="true">
+      <IllusLines widths={OB_LINE_WIDTHS} className="illus-lines--ob" />
+      <div className="ob-highlight" />
+      <div className="illus-overlay illus-overlay--ob-2">
+        <img src="/onboarding/overlay.png" alt="" />
+      </div>
+    </div>
+  );
+}
+
+function AdjustVisual() {
+  return (
+    <div className="illus-stage ob-illus-stage" aria-hidden="true">
+      <IllusLines widths={OB_LINE_WIDTHS} className="illus-lines--ob" />
+      <div className="illus-target illus-target--ob-3" />
+      <div className="illus-overlay illus-overlay--ob-3">
+        <img src="/onboarding/overlay.png" alt="" />
+        <CursorIcon />
+      </div>
+    </div>
+  );
+}
 
 export default function Onboarding() {
   const head = useReveal<HTMLDivElement>();
@@ -69,42 +106,14 @@ export default function Onboarding() {
 
         <div className="onboarding-preview">
           <div className="ob-card">
-            {step === 0 && (
-              <div className="ob-visual">
-                <div className="mv-drag" style={{ width: 150, height: 110 }}>
-                  <div className="mv-drag-inner">
-                    <div className="ghost" />
-                    <div className="card" />
-                    <span className="arrow">↗</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {step === 1 && (
-              <div className="ob-visual ob-visual-1">
-                <div className="demo-sentence" style={{ width: 92, flexShrink: 0 }}>
-                  다음 주 수요일부터 새로운 정책이 적용됩니다.
-                </div>
-                <div className="demo-video ob-video-box">
-                  <video src={demoVideo} autoPlay muted loop playsInline />
-                  <div className="demo-play">▶</div>
-                </div>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="ob-visual">
-                <div className="mv-resize" style={{ width: 150, height: 110 }}>
-                  <div className="box">
-                    <div className="handle" />
-                  </div>
-                  <div className="grow" />
-                </div>
-              </div>
-            )}
-
-            <p className="ob-msg">{MESSAGES[step]}</p>
+            <div className="ob-visual">
+              {step === 0 && <DragSelectVisual key={0} />}
+              {step === 1 && <VideoRevealVisual key={1} />}
+              {step === 2 && <AdjustVisual key={2} />}
+            </div>
+            <div className="ob-caption">
+              <p className="ob-msg">{MESSAGES[step]}</p>
+            </div>
           </div>
         </div>
       </div>
