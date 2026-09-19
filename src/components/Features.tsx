@@ -37,19 +37,19 @@ const FEATURES = [
   {
     label: "01 · POSITION",
     title: "원하는 자리로",
-    body: "헤더를 잡고 끌면 페이지 어디든 옮길 수 있습니다. 위치는 저장되어 다음에도 그대로예요.",
+    body: ["헤더를 잡고 끌면 페이지 어디든 옮길 수 있습니다.", "위치는 저장되어 다음에도 그대로예요."],
     Visual: DragVisual,
   },
   {
     label: "02 · SIZE",
     title: "원하는 크기로",
-    body: "모서리를 잡고 늘리면 영상도 함께 커집니다. 작은 노트북 화면에서도, 큰 모니터에서도 편하게.",
+    body: ["모서리를 잡고 늘리면 영상도 함께 커집니다.", "작은 노트북 화면에서도, 큰 모니터에서도 편하게."],
     Visual: ResizeVisual,
   },
   {
     label: "03 · DETAIL",
     title: "손끝까지 정확하게",
-    body: "트랙패드로 확대해서 손모양을 자세히 볼 수 있습니다. 놓치기 쉬운 미묘한 동작까지.",
+    body: ["트랙패드로 확대해서 손모양을 자세히 볼 수 있습니다.", "놓치기 쉬운 미묘한 동작까지."],
     Visual: ZoomVisual,
   },
 ] as const;
@@ -73,7 +73,14 @@ export default function Features() {
             </div>
             <span className="mono">{label}</span>
             <h3>{title}</h3>
-            <p>{body}</p>
+            <p>
+              {body.map((line, i) => (
+                <span key={line}>
+                  {i > 0 && <br />}
+                  {line}
+                </span>
+              ))}
+            </p>
           </div>
         ))}
       </div>
