@@ -1,4 +1,4 @@
-const JS_KEY = import.meta.env.VITE_KAKAO_JS_KEY as string | undefined;
+const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY as string | undefined;
 
 export const KAKAO_REDIRECT_URI = `${window.location.origin}/oauth/kakao/callback`;
 
@@ -13,12 +13,12 @@ function isKakaoOauthMessage(data: unknown): data is KakaoOauthMessage {
 }
 
 export async function getKakaoAuthCode(): Promise<string> {
-  if (!JS_KEY) {
-    throw new Error("VITE_KAKAO_JS_KEY가 설정되지 않았습니다. .env를 확인해주세요.");
+  if (!REST_API_KEY) {
+    throw new Error("VITE_KAKAO_REST_API_KEY가 설정되지 않았습니다. .env를 확인해주세요.");
   }
 
   const authorizeUrl =
-    `https://kauth.kakao.com/oauth/authorize?client_id=${encodeURIComponent(JS_KEY)}` +
+    `https://kauth.kakao.com/oauth/authorize?client_id=${encodeURIComponent(REST_API_KEY)}` +
     `&redirect_uri=${encodeURIComponent(KAKAO_REDIRECT_URI)}&response_type=code`;
 
   const popup = window.open(authorizeUrl, "kakao-login", "width=480,height=640");
