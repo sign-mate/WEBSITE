@@ -8,7 +8,7 @@ interface Props {
   onLoginSuccess: () => void;
   onNeedSignup: (
     provider: Provider,
-    prefill?: { email?: string; name?: string; idToken?: string; accessToken?: string }
+    prefill?: { email?: string; name?: string; idToken?: string }
   ) => void;
   onGoFindId: () => void;
   onGoResetPassword: () => void;
@@ -74,7 +74,7 @@ export default function LoginForm({ onLoginSuccess, onNeedSignup, onGoFindId, on
           if (provider === "GOOGLE") {
             onNeedSignup("GOOGLE", { email: res.email, name: res.name, idToken: res.idToken });
           } else {
-            onNeedSignup("KAKAO", { email: res.email, name: res.name, accessToken: res.kakaoAccessToken });
+            onNeedSignup("KAKAO", { email: res.email, name: res.name });
           }
         }}
       />

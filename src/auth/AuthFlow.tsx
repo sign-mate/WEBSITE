@@ -13,7 +13,7 @@ type View =
   | {
       name: "signup";
       provider: Provider;
-      prefill?: { email?: string; name?: string; idToken?: string; accessToken?: string };
+      prefill?: { email?: string; name?: string; idToken?: string };
     }
   | { name: "find-id" }
   | { name: "reset-password" }

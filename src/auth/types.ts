@@ -17,8 +17,6 @@ export interface SocialLoginResponse {
   refreshToken?: string;
   email?: string;
   name?: string;
-  // Kakao only, present when registered=false: forward to /auth/kakao/signup.
-  kakaoAccessToken?: string;
 }
 
 export interface FindEmailResponse {
@@ -40,7 +38,8 @@ export interface GoogleSignupPayload {
 }
 
 export interface KakaoSignupPayload {
-  accessToken: string;
+  code: string;
+  redirectUri: string;
   name: string;
   phone: string;
 }
