@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { getGoogleIdToken } from "../googleAuth";
+import { useEffect, useRef, useState } from "react";
+import { clearGoogleCredentialHandler, isGoogleAuthConfigured, renderGoogleButton } from "../googleAuth";
 import { getKakaoAuthCode } from "../kakaoAuth";
 import { googleLogin, kakaoLogin } from "../api";
 import { ApiError } from "../apiClient";
@@ -11,29 +11,6 @@ interface Props {
   onResult: (provider: "GOOGLE" | "KAKAO", result: SocialResult) => void;
   onError: (message: string) => void;
   disabled?: boolean;
-}
-
-function GoogleIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-      <path
-        fill="#4285F4"
-        d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"
-      />
-      <path
-        fill="#34A853"
-        d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.3-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M11.7 28.18c-.44-1.32-.69-2.72-.69-4.18s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.36-5.7z"
-      />
-      <path
-        fill="#EA4335"
-        d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.36 5.7c1.72-5.2 6.57-9.07 12.3-9.07z"
-      />
-    </svg>
-  );
 }
 
 function KakaoIcon() {
@@ -49,19 +26,54 @@ function KakaoIcon() {
 
 export default function SocialButtons({ onResult, onError, disabled }: Props) {
   const [loadingProvider, setLoadingProvider] = useState<"GOOGLE" | "KAKAO" | null>(null);
+  const [googleError, setGoogleError] = useState<string | null>(null);
+  const googleContainerRef = useRef<HTMLDivElement | null>(null);
+  const onResultRef = useRef(onResult);
+  const onErrorRef = useRef(onError);
 
-  const handleGoogle = async () => {
-    setLoadingProvider("GOOGLE");
-    try {
-      const idToken = await getGoogleIdToken();
-      const res = await googleLogin(idToken);
-      onResult("GOOGLE", { ...res, idToken });
-    } catch (e) {
-      onError(e instanceof ApiError ? e.message : e instanceof Error ? e.message : "구글 인증에 실패했습니다.");
-    } finally {
-      setLoadingProvider(null);
+  useEffect(() => {
+    onResultRef.current = onResult;
+  }, [onResult]);
+  useEffect(() => {
+    onErrorRef.current = onError;
+  }, [onError]);
+
+  useEffect(() => {
+    if (!isGoogleAuthConfigured()) {
+      setGoogleError("Google 로그인이 설정되지 않았습니다. 관리자에게 문의해주세요.");
+      return;
     }
-  };
+
+    const container = googleContainerRef.current;
+    if (!container) return;
+
+    const handleCredential = async (idToken: string) => {
+      setLoadingProvider("GOOGLE");
+      try {
+        const res = await googleLogin(idToken);
+        onResultRef.current("GOOGLE", { ...res, idToken });
+      } catch (e) {
+        onErrorRef.current(e instanceof ApiError ? e.message : e instanceof Error ? e.message : "구글 인증에 실패했습니다.");
+      } finally {
+        setLoadingProvider(null);
+      }
+    };
+
+    let cancelled = false;
+    renderGoogleButton(container, handleCredential, {
+      width: Math.min(container.offsetWidth || 400, 400),
+    }).catch((e) => {
+      if (!cancelled) {
+        setGoogleError(e instanceof Error ? e.message : "Google 로그인 버튼을 불러오지 못했습니다.");
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      clearGoogleCredentialHandler(handleCredential);
+      container.innerHTML = "";
+    };
+  }, []);
 
   const handleKakao = async () => {
     setLoadingProvider("KAKAO");
@@ -76,6 +88,8 @@ export default function SocialButtons({ onResult, onError, disabled }: Props) {
     }
   };
 
+  const googleBusy = disabled || loadingProvider !== null;
+
   return (
     <div className="social-row">
       <button
@@ -88,15 +102,14 @@ export default function SocialButtons({ onResult, onError, disabled }: Props) {
         {loadingProvider === "KAKAO" ? "확인 중..." : "카카오로 계속하기"}
       </button>
 
-      <button
-        type="button"
-        className="btn-social google"
-        disabled={disabled || loadingProvider !== null}
-        onClick={handleGoogle}
-      >
-        <GoogleIcon />
-        {loadingProvider === "GOOGLE" ? "확인 중..." : "Google로 계속하기"}
-      </button>
+      {googleError ? (
+        <p className="field-error google-btn-error">{googleError}</p>
+      ) : (
+        <div className={`google-btn-slot${googleBusy ? " is-busy" : ""}`}>
+          <div ref={googleContainerRef} className="google-btn-container" />
+          {loadingProvider === "GOOGLE" && <span className="google-btn-overlay">확인 중...</span>}
+        </div>
+      )}
     </div>
   );
 }

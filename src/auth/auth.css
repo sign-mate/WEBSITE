@@ -202,6 +202,33 @@
 .btn-social.kakao:hover:not(:disabled) { background: #f2da00; }
 .btn-social.kakao:disabled { opacity: 0.6; }
 
+.google-btn-slot {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.google-btn-slot.is-busy { pointer-events: none; opacity: 0.6; }
+.google-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.google-btn-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
+  font-size: 14px;
+  color: #191919;
+  pointer-events: none;
+}
+.google-btn-error { text-align: center; }
+
 .sms-field { margin-bottom: 16px; }
 .sms-row { display: flex; gap: 8px; align-items: center; }
 .sms-row .field-input { flex: 1; }
