@@ -10,17 +10,30 @@ import AuthFlow from "./auth/AuthFlow";
 import KakaoCallback from "./auth/KakaoCallback";
 import { clearTokens, getAccessToken } from "./auth/apiClient";
 
+type AuthModalView =
+  | { name: "login" }
+  | { name: "mypage" }
+  | { name: "subscription"; subView?: "overview" | "subscribe" };
+
 export default function App() {
   const [authOpen, setAuthOpen] = useState(false);
-  const [authView, setAuthView] = useState<"login" | "mypage">("login");
+  const [authView, setAuthView] = useState<AuthModalView>({ name: "login" });
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!getAccessToken());
 
   const openLogin = () => {
-    setAuthView("login");
+    setAuthView({ name: "login" });
     setAuthOpen(true);
   };
   const openMyPage = () => {
-    setAuthView("mypage");
+    setAuthView({ name: "mypage" });
+    setAuthOpen(true);
+  };
+  const openSubscribe = () => {
+    if (!isLoggedIn) {
+      openLogin();
+      return;
+    }
+    setAuthView({ name: "subscription", subView: "subscribe" });
     setAuthOpen(true);
   };
   const handleLogout = () => {
@@ -50,7 +63,7 @@ export default function App() {
           path="/pricing"
           element={
             <Layout {...layoutProps}>
-              <PricingPage />
+              <PricingPage onSubscribeClick={openSubscribe} />
             </Layout>
           }
         />

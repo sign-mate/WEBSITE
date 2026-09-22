@@ -1,12 +1,17 @@
 import { apiGet, apiPost, apiPut } from "./apiClient";
 import { KAKAO_REDIRECT_URI } from "./kakaoAuth";
 import type {
+  BillingCardPayload,
+  ChangePaymentMethodResponse,
   FindEmailResponse,
   SocialLoginResponse,
   GoogleSignupPayload,
   KakaoSignupPayload,
   MyPageInfo,
+  PaymentHistoryItem,
   SignupPayload,
+  SubscribeResponse,
+  SubscriptionInfo,
   TokenResponse,
 } from "./types";
 
@@ -65,4 +70,30 @@ export async function getMyInfo(): Promise<MyPageInfo> {
 
 export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
   await apiPut<void>("/users/me/password", { currentPassword, newPassword }, { auth: true });
+}
+
+export async function getMySubscription(): Promise<SubscriptionInfo> {
+  return apiGet<SubscriptionInfo>("/subscriptions/me", { auth: true });
+}
+
+export async function cancelSubscription(): Promise<void> {
+  await apiPost<void>("/subscriptions/cancel", undefined, { auth: true });
+}
+
+export async function revokeCancellation(): Promise<void> {
+  await apiPost<void>("/subscriptions/cancel/revoke", undefined, { auth: true });
+}
+
+export async function changePaymentMethod(
+  payload: BillingCardPayload
+): Promise<ChangePaymentMethodResponse> {
+  return apiPut<ChangePaymentMethodResponse>("/subscriptions/payment-method", payload, { auth: true });
+}
+
+export async function getPaymentHistory(): Promise<PaymentHistoryItem[]> {
+  return apiGet<PaymentHistoryItem[]>("/payments", { auth: true });
+}
+
+export async function subscribeBilling(payload: BillingCardPayload): Promise<SubscribeResponse> {
+  return apiPost<SubscribeResponse>("/payments/billing-key", payload, { auth: true });
 }

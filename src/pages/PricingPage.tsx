@@ -7,11 +7,11 @@ const PLAN_FEATURES = [
   "모든 웹사이트에서 사용 가능",
 ];
 
-function handleSubscribe() {
-  window.alert("결제 기능은 현재 준비 중입니다. 빠른 시일 내에 만나보실 수 있도록 준비하고 있어요!");
+interface Props {
+  onSubscribeClick: () => void;
 }
 
-export default function PricingPage() {
+export default function PricingPage({ onSubscribeClick }: Props) {
   const head = useReveal<HTMLDivElement>();
 
   return (
@@ -38,7 +38,7 @@ export default function PricingPage() {
               <li key={feature}>{feature}</li>
             ))}
           </ul>
-          <button type="button" className="btn-primary pricing-btn" onClick={handleSubscribe}>
+          <button type="button" className="btn-primary pricing-btn" onClick={onSubscribeClick}>
             구독하기
           </button>
         </div>

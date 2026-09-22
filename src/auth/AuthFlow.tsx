@@ -6,6 +6,7 @@ import FindIdForm from "./components/FindIdForm";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import MyPageInfo from "./components/MyPageInfo";
 import ChangePasswordForm from "./components/ChangePasswordForm";
+import SubscriptionFlow, { type SubscriptionView } from "./SubscriptionFlow";
 import "./auth.css";
 
 type View =
@@ -18,15 +19,16 @@ type View =
   | { name: "find-id" }
   | { name: "reset-password" }
   | { name: "mypage" }
-  | { name: "change-password" };
+  | { name: "change-password" }
+  | { name: "subscription"; subView?: SubscriptionView };
 
 interface Props {
-  initialView?: View["name"];
+  initialView?: View;
   onAuthSuccess?: () => void;
 }
 
-export default function AuthFlow({ initialView = "login", onAuthSuccess }: Props) {
-  const [view, setView] = useState<View>({ name: initialView } as View);
+export default function AuthFlow({ initialView = { name: "login" }, onAuthSuccess }: Props) {
+  const [view, setView] = useState<View>(initialView);
 
   switch (view.name) {
     case "login":
@@ -67,9 +69,22 @@ export default function AuthFlow({ initialView = "login", onAuthSuccess }: Props
       );
 
     case "mypage":
-      return <MyPageInfo onGoChangePassword={() => setView({ name: "change-password" })} />;
+      return (
+        <MyPageInfo
+          onGoChangePassword={() => setView({ name: "change-password" })}
+          onGoSubscription={() => setView({ name: "subscription" })}
+        />
+      );
 
     case "change-password":
       return <ChangePasswordForm onBack={() => setView({ name: "mypage" })} />;
+
+    case "subscription":
+      return (
+        <SubscriptionFlow
+          initialView={view.subView ?? "overview"}
+          onBack={() => setView({ name: "mypage" })}
+        />
+      );
   }
 }

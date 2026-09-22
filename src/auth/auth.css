@@ -317,3 +317,27 @@
 }
 .info-row dt { color: var(--muted, #6b6a64); }
 .info-row dd { margin: 0; color: var(--ink, #1a1a1a); font-weight: 600; }
+
+.payment-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.payment-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.payment-table th,
+.payment-table td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-edge, rgba(0, 0, 0, 0.06));
+}
+.payment-table th {
+  color: var(--muted, #6b6a64);
+  font-weight: 600;
+}
+.payment-table td {
+  color: var(--ink, #1a1a1a);
+}
