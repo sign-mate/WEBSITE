@@ -50,3 +50,52 @@ export interface MyPageInfo {
   phone: string;
   provider: Provider;
 }
+
+export type Plan = "FREE" | "PRO";
+
+export type SubscriptionStatus = "PENDING" | "ACTIVE" | "CANCELED" | "EXPIRED" | null;
+
+export type PaymentStatus = "REQUESTED" | "PAID" | "FAILED" | "CANCELED";
+
+export interface SubscriptionUsage {
+  used: number;
+  limit: number | null;
+}
+
+export interface SubscriptionInfo {
+  plan: Plan;
+  status: SubscriptionStatus;
+  nextBillingAt: string | null;
+  expiresAt: string | null;
+  canceled: boolean;
+  paymentFailed: boolean;
+  cardName: string | null;
+  usage: SubscriptionUsage | null;
+}
+
+export interface BillingCardPayload {
+  cardNo: string;
+  expYear: string;
+  expMonth: string;
+  idNo: string;
+  cardPw: string;
+}
+
+export interface ChangePaymentMethodResponse {
+  cardName: string;
+}
+
+export interface PaymentHistoryItem {
+  orderId: string;
+  amount: number;
+  status: PaymentStatus;
+  paidAt: string | null;
+  createdAt: string;
+}
+
+export interface SubscribeResponse {
+  cardName: string;
+  amount: number;
+  paidAt: string;
+  nextBillingAt: string;
+}

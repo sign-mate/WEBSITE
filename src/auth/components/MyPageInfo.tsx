@@ -4,9 +4,10 @@ import type { MyPageInfo as MyPageInfoT } from "../types";
 
 interface Props {
   onGoChangePassword: () => void;
+  onGoSubscription: () => void;
 }
 
-export default function MyPageInfo({ onGoChangePassword }: Props) {
+export default function MyPageInfo({ onGoChangePassword, onGoSubscription }: Props) {
   const [info, setInfo] = useState<MyPageInfoT | null>(null);
 
   useEffect(() => {
@@ -36,6 +37,15 @@ export default function MyPageInfo({ onGoChangePassword }: Props) {
 
       <button type="button" className="btn-outline auth-submit" onClick={onGoChangePassword}>
         비밀번호 변경
+      </button>
+
+      <button
+        type="button"
+        className="btn-outline auth-submit"
+        style={{ marginTop: 10 }}
+        onClick={onGoSubscription}
+      >
+        구독 관리
       </button>
     </div>
   );
