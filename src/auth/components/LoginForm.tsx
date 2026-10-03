@@ -2,6 +2,7 @@ import { useState } from "react";
 import { login } from "../api";
 import { ApiError, setTokens } from "../apiClient";
 import SocialButtons from "./SocialButtons";
+import SignPreview from "../../components/SignPreview";
 import type { Provider } from "../types";
 
 interface Props {
@@ -49,16 +50,20 @@ export default function LoginForm({ onLoginSuccess, onNeedSignup, onGoFindId, on
 
       {error && <p className="field-error">{error}</p>}
 
-      <button type="button" className="btn-solid-coral auth-submit" disabled={loading} onClick={handleSubmit}>
-        {loading ? "로그인 중..." : "로그인"}
-      </button>
+      <SignPreview src="/sign/login.mp4">
+        <button type="button" className="btn-solid-coral auth-submit" disabled={loading} onClick={handleSubmit}>
+          {loading ? "로그인 중..." : "로그인"}
+        </button>
+      </SignPreview>
 
       <div className="auth-links">
         <button type="button" className="link-btn" onClick={onGoFindId}>아이디 찾기</button>
         <span className="dot">·</span>
         <button type="button" className="link-btn" onClick={onGoResetPassword}>비밀번호 찾기</button>
         <span className="dot">·</span>
-        <button type="button" className="link-btn" onClick={() => onNeedSignup("LOCAL")}>회원가입</button>
+        <SignPreview src="/sign/signup.mp4">
+          <button type="button" className="link-btn" onClick={() => onNeedSignup("LOCAL")}>회원가입</button>
+        </SignPreview>
       </div>
 
       <div className="divider"><span>또는</span></div>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
-import demoVideo from "../assets/demo.webm";
+import SignPreview from "./SignPreview";
 
 export default function Hero() {
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -85,9 +85,11 @@ export default function Hero() {
           그 자리에서 한국수어 영상으로 바로 보여줍니다.
         </p>
         <div className="cta-row">
-          <a className="btn-primary" href="#install">
-            Chrome에 추가하기
-          </a>
+          <SignPreview src="/sign/add-chrome.mp4">
+            <a className="btn-primary" href="#install">
+              Chrome에 추가하기
+            </a>
+          </SignPreview>
           <a className="btn-secondary" href="#how">
             작동 방식 보기
           </a>
@@ -125,7 +127,7 @@ export default function Hero() {
           </div>
           <div className="demo-sentence">다음 주 수요일부터 새로운 정책이 적용됩니다.</div>
           <div className="demo-video">
-            <video src={demoVideo} autoPlay muted loop playsInline />
+            <video src="/sign/demo.mp4" autoPlay muted loop playsInline />
             <div className="demo-play">▶</div>
           </div>
           <p className="demo-hint">카드를 끌어서 원하는 곳에 두세요</p>
