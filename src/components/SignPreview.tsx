@@ -70,6 +70,14 @@ export default function SignPreview({ src, children }: SignPreviewProps) {
 
   useEffect(() => () => window.clearTimeout(openTimer.current), []);
 
+  const disabled = isValidElement(children)
+    ? Boolean((children.props as { disabled?: unknown }).disabled)
+    : false;
+
+  useEffect(() => {
+    if (disabled) close();
+  }, [disabled, close]);
+
   if (!isValidElement(children)) return children;
 
   const child = children as ReactElement<Record<string, unknown>>;
@@ -85,7 +93,7 @@ export default function SignPreview({ src, children }: SignPreviewProps) {
     ref: setRefs,
     onPointerEnter: (e: PointerEvent) => {
       (child.props.onPointerEnter as ((e: PointerEvent) => void) | undefined)?.(e);
-      if (e.pointerType === "mouse") scheduleOpen();
+      if (e.pointerType === "mouse" && !disabled) scheduleOpen();
     },
     onPointerLeave: (e: PointerEvent) => {
       (child.props.onPointerLeave as ((e: PointerEvent) => void) | undefined)?.(e);
@@ -93,7 +101,7 @@ export default function SignPreview({ src, children }: SignPreviewProps) {
     },
     onFocus: (e: FocusEvent) => {
       (child.props.onFocus as ((e: FocusEvent) => void) | undefined)?.(e);
-      scheduleOpen();
+      if (!disabled) scheduleOpen();
     },
     onBlur: (e: FocusEvent) => {
       (child.props.onBlur as ((e: FocusEvent) => void) | undefined)?.(e);

@@ -50,9 +50,11 @@ export default function LoginForm({ onLoginSuccess, onNeedSignup, onGoFindId, on
 
       {error && <p className="field-error">{error}</p>}
 
-      <button type="button" className="btn-solid-coral auth-submit" disabled={loading} onClick={handleSubmit}>
-        {loading ? "로그인 중..." : "로그인"}
-      </button>
+      <SignPreview src="/sign/login.mp4">
+        <button type="button" className="btn-solid-coral auth-submit" disabled={loading} onClick={handleSubmit}>
+          {loading ? "로그인 중..." : "로그인"}
+        </button>
+      </SignPreview>
 
       <div className="auth-links">
         <button type="button" className="link-btn" onClick={onGoFindId}>아이디 찾기</button>
