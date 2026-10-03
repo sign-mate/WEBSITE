@@ -757,8 +757,8 @@ footer .brand { font-size: 14px; font-weight: 700; color: var(--ink); letter-spa
 
 .sign-preview-card {
   position: fixed;
-  width: 160px;
-  height: 160px;
+  width: 220px;
+  height: 220px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 12px 32px -10px rgba(26, 26, 26, 0.22);

@@ -17,7 +17,7 @@ interface SignPreviewProps {
 }
 
 const OPEN_DELAY = 200;
-const CARD_SIZE = 160;
+const CARD_SIZE = 220;
 const GAP = 8;
 const EDGE_MARGIN = 8;
 
