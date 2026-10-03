@@ -25,9 +25,14 @@ type View =
 interface Props {
   initialView?: View;
   onAuthSuccess?: () => void;
+  onWithdrawSuccess: (notice: string) => void;
 }
 
-export default function AuthFlow({ initialView = { name: "login" }, onAuthSuccess }: Props) {
+export default function AuthFlow({
+  initialView = { name: "login" },
+  onAuthSuccess,
+  onWithdrawSuccess,
+}: Props) {
   const [view, setView] = useState<View>(initialView);
 
   switch (view.name) {
@@ -73,6 +78,7 @@ export default function AuthFlow({ initialView = { name: "login" }, onAuthSucces
         <MyPageInfo
           onGoChangePassword={() => setView({ name: "change-password" })}
           onGoSubscription={() => setView({ name: "subscription" })}
+          onWithdrawSuccess={onWithdrawSuccess}
         />
       );
 

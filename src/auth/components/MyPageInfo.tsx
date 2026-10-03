@@ -1,20 +1,45 @@
 import { useEffect, useState } from "react";
-import { getMyInfo } from "../api";
+import { getMyInfo, withdrawAccount } from "../api";
+import { ApiError } from "../apiClient";
 import type { MyPageInfo as MyPageInfoT } from "../types";
+import WithdrawModal from "./WithdrawModal";
 
 interface Props {
   onGoChangePassword: () => void;
   onGoSubscription: () => void;
+  onWithdrawSuccess: (notice: string) => void;
 }
 
-export default function MyPageInfo({ onGoChangePassword, onGoSubscription }: Props) {
+export default function MyPageInfo({ onGoChangePassword, onGoSubscription, onWithdrawSuccess }: Props) {
   const [info, setInfo] = useState<MyPageInfoT | null>(null);
+  const [showWithdraw, setShowWithdraw] = useState(false);
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
+  const [withdrawError, setWithdrawError] = useState<string | null>(null);
 
   useEffect(() => {
     getMyInfo().then(setInfo);
   }, []);
 
   if (!info) return <div className="auth-card">불러오는 중...</div>;
+
+  const handleWithdraw = async () => {
+    setWithdrawLoading(true);
+    setWithdrawError(null);
+    try {
+      await withdrawAccount();
+      onWithdrawSuccess("탈퇴가 완료되었어요");
+    } catch (e) {
+      if (e instanceof ApiError && e.code === "USER-003") {
+        onWithdrawSuccess("이미 탈퇴한 계정이에요");
+        return;
+      }
+      setWithdrawError(
+        e instanceof ApiError || e instanceof Error ? e.message : "탈퇴 처리에 실패했습니다."
+      );
+    } finally {
+      setWithdrawLoading(false);
+    }
+  };
 
   return (
     <div className="auth-card">
@@ -47,6 +72,24 @@ export default function MyPageInfo({ onGoChangePassword, onGoSubscription }: Pro
       >
         구독 관리
       </button>
+
+      <button
+        type="button"
+        className="link-btn-subtle"
+        style={{ marginTop: 18, display: "block", marginLeft: "auto", marginRight: "auto" }}
+        onClick={() => setShowWithdraw(true)}
+      >
+        회원 탈퇴
+      </button>
+
+      {showWithdraw && (
+        <WithdrawModal
+          loading={withdrawLoading}
+          error={withdrawError}
+          onClose={() => setShowWithdraw(false)}
+          onConfirm={handleWithdraw}
+        />
+      )}
     </div>
   );
 }

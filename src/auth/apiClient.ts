@@ -34,6 +34,10 @@ export async function apiPut<T>(
   return apiRequest<T>(path, "PUT", body, options);
 }
 
+export async function apiDelete<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  return apiRequest<T>(path, "DELETE", undefined, options);
+}
+
 async function apiRequest<T>(
   path: string,
   method: string,

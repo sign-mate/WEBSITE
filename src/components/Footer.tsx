@@ -25,6 +25,7 @@ export default function Footer() {
           <Link to="/terms">이용약관</Link>
           <Link to="/privacy">개인정보처리방침</Link>
           <Link to="/refund-policy">환불정책</Link>
+          <Link to="/account-deletion">계정 삭제 안내</Link>
           <a href="https://github.com/sign-mate">GitHub</a>
         </nav>
       </div>

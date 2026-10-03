@@ -665,8 +665,8 @@ footer .brand { font-size: 14px; font-weight: 700; color: var(--ink); letter-spa
   flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
-  height: 100%;
-  gap: clamp(8px, 1vw, 12px);
+  align-self: stretch;
+  gap: 0;
 }
 .footer-links a { color: var(--faint); text-decoration: none; transition: color 0.15s ease; }
 .footer-links a:hover { color: var(--coral-deep); }
