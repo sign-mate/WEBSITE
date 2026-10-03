@@ -19,7 +19,7 @@ export default function AccountDeletionPage() {
 
       <h2>2. 로그인할 수 없는 경우</h2>
       <p>
-        가입한 이메일 주소 또는 이름과 전화번호를 적어 고객센터 이메일 doole0009@gmail.com 으로
+        가입한 이메일 주소 또는 이름과 전화번호를 적어 고객센터 이메일 signmate914@gmail.com 으로
         삭제를 요청해 주세요. 본인 확인 후 지체 없이 처리합니다.
       </p>
 

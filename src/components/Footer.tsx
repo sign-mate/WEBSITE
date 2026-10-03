@@ -15,8 +15,8 @@ export default function Footer() {
             <p>대표자: 임정원 (공동사업자: 윤혜린, 이현택)</p>
             <p>사업자등록번호: 313-10-65174</p>
             <p>사업장 주소: 경기도 부천시 원미구 소향로 11, A동 2602호 (상동, 코오롱파크뷰)</p>
-            <p>통신판매업신고번호: 준비 중</p>
-            <p>고객센터: doole0009@gmail.com</p>
+            <p>통신판매업신고번호: 2026-부천원미-1974</p>
+            <p>고객센터: signmate914@gmail.com</p>
           </div>
           <div className="footer-credit">© 2026. Signmate. All rights reserved.</div>
         </div>

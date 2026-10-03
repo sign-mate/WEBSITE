@@ -29,7 +29,7 @@ export default function RefundPolicyPage() {
 
       <h2>제3조 (환불 절차 및 기간)</h2>
       <p>
-        이용자가 청약철회를 요청하는 경우, 회사는 고객센터 이메일(doole0009@gmail.com)을 통해
+        이용자가 청약철회를 요청하는 경우, 회사는 고객센터 이메일(signmate914@gmail.com)을 통해
         접수받은 요청을 확인한 후 3영업일 이내에 청약철회 의사표시를 확인합니다. 회사는 환불
         요청을 받은 날로부터 3영업일 이내에 이미 지급받은 대금의 환급을 정당한 결제수단으로
         환급하며, 신용카드 등으로 대금을 지급한 경우에는 지체 없이 해당 결제수단을 이용한 결제가
@@ -59,7 +59,7 @@ export default function RefundPolicyPage() {
       </p>
       <ul>
         <li>상호명: Signmate(사인메이트)</li>
-        <li>고객센터 이메일: doole0009@gmail.com</li>
+        <li>고객센터 이메일: signmate914@gmail.com</li>
       </ul>
     </LegalPage>
   );

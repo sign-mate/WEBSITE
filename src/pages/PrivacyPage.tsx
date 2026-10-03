@@ -98,7 +98,7 @@ export default function PrivacyPage() {
       </p>
       <ul>
         <li>성명: 임정원</li>
-        <li>이메일: doole0009@gmail.com</li>
+        <li>이메일: signmate914@gmail.com</li>
       </ul>
 
       <h2>9. 크롬 확장 프로그램에서의 정보 처리</h2>
