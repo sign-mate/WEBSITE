@@ -9,7 +9,8 @@ import RefundPolicyPage from "./pages/RefundPolicyPage";
 import AccountDeletionPage from "./pages/AccountDeletionPage";
 import AuthFlow from "./auth/AuthFlow";
 import KakaoCallback from "./auth/KakaoCallback";
-import { clearTokens, getAccessToken } from "./auth/apiClient";
+import { clearTokens, getAccessToken, getRefreshToken } from "./auth/apiClient";
+import { logout } from "./auth/api";
 
 type AuthModalView =
   | { name: "login" }
@@ -40,11 +41,16 @@ export default function App() {
     setAuthOpen(true);
   };
   const handleLogout = () => {
+    const refreshToken = getRefreshToken();
+    if (refreshToken) {
+      logout(refreshToken).catch(() => {});
+    }
     clearTokens();
     setIsLoggedIn(false);
   };
   const handleWithdrawSuccess = (message: string) => {
-    handleLogout();
+    clearTokens();
+    setIsLoggedIn(false);
     setAuthOpen(false);
     navigate("/");
     setNotice(message);
