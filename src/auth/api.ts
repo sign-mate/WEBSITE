@@ -51,6 +51,10 @@ export async function refreshTokens(refreshToken: string): Promise<TokenResponse
   return apiPost<TokenResponse>("/auth/refresh", { refreshToken });
 }
 
+export async function logout(refreshToken: string): Promise<void> {
+  await apiPost<void>("/auth/logout", { refreshToken });
+}
+
 export async function findEmail(name: string, phone: string): Promise<FindEmailResponse> {
   return apiPost<FindEmailResponse>("/auth/find-email", { name, phone });
 }
