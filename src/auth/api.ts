@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPut } from "./apiClient";
+import { apiDelete, apiGet, apiPost, apiPut } from "./apiClient";
 import { KAKAO_REDIRECT_URI } from "./kakaoAuth";
 import type {
   BillingCardPayload,
@@ -70,6 +70,10 @@ export async function getMyInfo(): Promise<MyPageInfo> {
 
 export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
   await apiPut<void>("/users/me/password", { currentPassword, newPassword }, { auth: true });
+}
+
+export async function withdrawAccount(): Promise<void> {
+  await apiDelete<void>("/users/me", { auth: true });
 }
 
 export async function getMySubscription(): Promise<SubscriptionInfo> {

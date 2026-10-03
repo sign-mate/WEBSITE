@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import LegalPage from "../components/LegalPage";
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="개인정보처리방침" updated="2026년 10월 1일">
+    <LegalPage title="개인정보처리방침" updated="2026년 10월 2일">
       <p>
         Signmate(사인메이트, 이하 "회사")는 이용자의 개인정보를 중요시하며, 「개인정보 보호법」
         등 관련 법령을 준수하고 있습니다. 회사는 개인정보처리방침을 통하여 이용자가 제공하는
@@ -47,6 +48,8 @@ export default function PrivacyPage() {
         <li>접속에 관한 기록(로그인 기록): 3개월 (통신비밀보호법)</li>
         <li>변환 요청 문장 원문: 저장하지 않음</li>
         <li>비식별 통계(해시 집계값): 30일 후 자동 삭제</li>
+        <li>탈퇴한 회원의 개인정보(이메일, 이름, 전화번호 등): 탈퇴 즉시 복원할 수 없도록 익명
+          처리하며, 결제 및 청약철회 관련 기록은 위 기간 동안 보관</li>
       </ul>
 
       <h2>4. 개인정보의 제3자 제공</h2>
@@ -74,7 +77,10 @@ export default function PrivacyPage() {
       <p>
         이용자는 회사에 대해 언제든지 개인정보 열람, 정정, 삭제, 처리정지 요구 등의 권리를
         행사할 수 있습니다. 권리 행사는 회사의 고객센터 이메일을 통해 서면, 이메일 등으로 하실
-        수 있으며, 회사는 이에 대해 지체 없이 조치합니다.
+        수 있으며, 회사는 이에 대해 지체 없이 조치합니다. 회원 탈퇴는 웹사이트의 마이페이지에서
+        직접 하실 수 있습니다. 자세한 방법은{" "}
+        <Link to="/account-deletion">계정 및 데이터 삭제 안내</Link> 페이지에서 확인하실 수
+        있습니다.
       </p>
 
       <h2>7. 개인정보의 파기</h2>

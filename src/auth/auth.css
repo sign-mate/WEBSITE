@@ -153,6 +153,54 @@
 }
 .dot { color: var(--faint, #b0afa9); }
 
+.link-btn-subtle {
+  background: none;
+  border: none;
+  color: #767676;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+.link-btn-subtle:hover { color: #4a4a4a; }
+
+.modal-notice-list {
+  margin: 0 0 18px;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted, #6b6a64);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  word-break: keep-all;
+}
+
+.modal-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink, #1a1a1a);
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.app-notice {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  background: var(--ink, #1a1a1a);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.35);
+  z-index: 200;
+}
+
 .divider {
   display: flex;
   align-items: center;
@@ -276,6 +324,7 @@
   border-radius: 17px;
   background: var(--glass-grad, linear-gradient(135deg, #ffd6ba, #ffb3c4, #ffd6ba));
 }
+.modal-card-withdraw { max-width: 380px; }
 .modal-card::before {
   content: "";
   position: absolute;
@@ -289,7 +338,10 @@
 }
 .modal-message,
 .modal-sub,
-.modal-actions {
+.modal-actions,
+.modal-notice-list,
+.modal-checkbox-row,
+.modal-card .field-error {
   position: relative;
   z-index: 1;
 }
