@@ -404,7 +404,6 @@ section.wrap { padding: 88px 32px; position: relative; }
 
 .demo-card.idle { animation: floaty 4.2s ease-in-out infinite; }
 
-/* Feature card illustrations (extension overlay screenshots) */
 .illus-stage {
   position: relative;
   width: 100%;
@@ -562,7 +561,6 @@ section.wrap { padding: 88px 32px; position: relative; }
 .ob-caption { height: 60px; display: flex; align-items: center; justify-content: center; padding: 0 16px; }
 .ob-msg { margin: 0; font-size: 11.5px; color: var(--faint); text-align: center; transition: opacity 0.2s ease; }
 
-/* Onboarding step illustrations (reuses .illus-* base rules from Features) */
 .ob-illus-stage { height: auto; aspect-ratio: 380 / 300; border-radius: 0; border: none; }
 
 .illus-lines--ob { padding: 7.89% 8.95%; gap: 12px; }
