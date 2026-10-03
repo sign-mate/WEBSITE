@@ -67,6 +67,17 @@ export default function SubscriptionOverview({
   const isActiveNotCanceled = isPro && info.status === "ACTIVE" && !info.canceled;
   const isCanceled = isPro && info.canceled;
   const isPending = isPro && !isActiveNotCanceled && !isCanceled;
+  const isGooglePlay = info.source === "GOOGLE_PLAY";
+
+  const googlePlayGuidance = (
+    <p className="modal-sub">
+      앱에서 Google Play로 결제한 구독이에요. 해지와 결제 수단 변경은 Google Play 구독 메뉴에서 할 수
+      있어요.{" "}
+      <a href="https://play.google.com/store/account/subscriptions" target="_blank" rel="noopener noreferrer">
+        Google Play 구독 관리
+      </a>
+    </p>
+  );
 
   return (
     <div className="auth-card">
@@ -74,7 +85,7 @@ export default function SubscriptionOverview({
 
       {info.paymentFailed && (
         <p className="field-error" style={{ marginBottom: 16 }}>
-          결제에 실패했습니다. 결제 수단을 확인하고 변경해주세요.
+          {isGooglePlay ? "결제에 실패했습니다." : "결제에 실패했습니다. 결제 수단을 확인하고 변경해주세요."}
         </p>
       )}
 
@@ -111,22 +122,30 @@ export default function SubscriptionOverview({
               <dt>다음 결제일</dt>
               <dd>{formatDate(info.nextBillingAt)}</dd>
             </div>
-            <div className="info-row">
-              <dt>결제 카드</dt>
-              <dd>{info.cardName ?? "-"}</dd>
-            </div>
+            {!isGooglePlay && (
+              <div className="info-row">
+                <dt>결제 카드</dt>
+                <dd>{info.cardName ?? "-"}</dd>
+              </div>
+            )}
           </dl>
-          <button type="button" className="btn-outline auth-submit" onClick={onGoChangePayment}>
-            결제 수단 변경
-          </button>
-          <button
-            type="button"
-            className="link-btn"
-            style={{ marginTop: 14 }}
-            onClick={() => setShowCancelConfirm(true)}
-          >
-            구독 취소
-          </button>
+          {isGooglePlay ? (
+            googlePlayGuidance
+          ) : (
+            <>
+              <button type="button" className="btn-outline auth-submit" onClick={onGoChangePayment}>
+                결제 수단 변경
+              </button>
+              <button
+                type="button"
+                className="link-btn"
+                style={{ marginTop: 14 }}
+                onClick={() => setShowCancelConfirm(true)}
+              >
+                구독 취소
+              </button>
+            </>
+          )}
         </>
       )}
 
@@ -143,14 +162,18 @@ export default function SubscriptionOverview({
             </div>
           </dl>
           <p className="modal-sub">다음 결제일부터 Free로 전환될 예정입니다.</p>
-          <button
-            type="button"
-            className="btn-solid-coral auth-submit"
-            disabled={actionLoading}
-            onClick={handleRevoke}
-          >
-            {actionLoading ? "처리 중..." : "해지 철회"}
-          </button>
+          {isGooglePlay ? (
+            googlePlayGuidance
+          ) : (
+            <button
+              type="button"
+              className="btn-solid-coral auth-submit"
+              disabled={actionLoading}
+              onClick={handleRevoke}
+            >
+              {actionLoading ? "처리 중..." : "해지 철회"}
+            </button>
+          )}
         </>
       )}
 

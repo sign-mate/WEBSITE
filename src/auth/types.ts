@@ -57,6 +57,8 @@ export type SubscriptionStatus = "PENDING" | "ACTIVE" | "CANCELED" | "EXPIRED" |
 
 export type PaymentStatus = "REQUESTED" | "PAID" | "FAILED" | "CANCELED";
 
+export type SubscriptionSource = "WEB" | "GOOGLE_PLAY" | null;
+
 export interface SubscriptionUsage {
   used: number;
   limit: number | null;
@@ -71,6 +73,7 @@ export interface SubscriptionInfo {
   paymentFailed: boolean;
   cardName: string | null;
   usage: SubscriptionUsage | null;
+  source: SubscriptionSource;
 }
 
 export interface BillingCardPayload {

@@ -3,7 +3,7 @@ import LegalPage from "../components/LegalPage";
 
 export default function AccountDeletionPage() {
   return (
-    <LegalPage title="계정 및 데이터 삭제 안내" updated="2026년 10월 2일">
+    <LegalPage title="계정 및 데이터 삭제 안내" updated="2026년 10월 3일">
       <p>
         Signmate(사인메이트) 서비스(웹사이트, 크롬 확장 프로그램, Android 앱)의 계정과 데이터를
         삭제하는 방법을 안내합니다. 앱을 다시 설치하지 않아도 웹사이트에서 직접 삭제를 요청할 수
@@ -51,6 +51,10 @@ export default function AccountDeletionPage() {
           기간은 환불되지 않으니, 남은 기간을 이용하려면 구독을 먼저 취소하고 기간이 끝난 뒤에
           탈퇴해 주세요. 자세한 내용은 <Link to="/refund-policy">환불정책</Link> 페이지에서
           확인하실 수 있습니다.
+        </li>
+        <li>
+          Google Play에서 결제한 구독은 탈퇴해도 자동으로 끊기지 않아서 Google Play 구독 메뉴에서
+          따로 해지해야 합니다.
         </li>
         <li>
           카카오 또는 구글 계정으로 가입한 경우, 각 서비스의 계정 설정에서 Signmate 연결을 직접
