@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SignPreview from "./SignPreview";
 
 export default function Footer() {
   return (
@@ -21,7 +22,9 @@ export default function Footer() {
         </div>
         <nav className="footer-links" aria-label="사이트 링크">
           <a href="/#features">서비스 소개</a>
-          <Link to="/pricing">요금제</Link>
+          <SignPreview src="/sign/pricing.mp4">
+            <Link to="/pricing">요금제</Link>
+          </SignPreview>
           <Link to="/terms">이용약관</Link>
           <Link to="/privacy">개인정보처리방침</Link>
           <Link to="/refund-policy">환불정책</Link>
