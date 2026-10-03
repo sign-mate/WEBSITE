@@ -39,16 +39,18 @@ export default function Nav({ isLoggedIn, onLoginClick, onMyPageClick, onLogout 
                 마이페이지
               </a>
             </SignPreview>
-            <a
-              className="nav-login"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onLogout();
-              }}
-            >
-              로그아웃
-            </a>
+            <SignPreview src="/sign/logout.mp4">
+              <a
+                className="nav-login"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onLogout();
+                }}
+              >
+                로그아웃
+              </a>
+            </SignPreview>
           </>
         ) : (
           <SignPreview src="/sign/login.mp4">
