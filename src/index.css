@@ -754,3 +754,22 @@ footer .brand { font-size: 14px; font-weight: 700; color: var(--ink); letter-spa
 .legal-body ul { margin: 0 0 12px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 .legal-body li { font-size: 14.5px; line-height: 1.75; color: var(--muted); }
 .legal-body a { color: var(--coral-deep); text-decoration: underline; }
+
+.sign-preview-card {
+  position: fixed;
+  width: 160px;
+  height: 160px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px -10px rgba(26, 26, 26, 0.22);
+  overflow: hidden;
+  z-index: 1000;
+  pointer-events: none;
+}
+.sign-preview-card video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  display: block;
+}

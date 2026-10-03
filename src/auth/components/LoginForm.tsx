@@ -2,6 +2,7 @@ import { useState } from "react";
 import { login } from "../api";
 import { ApiError, setTokens } from "../apiClient";
 import SocialButtons from "./SocialButtons";
+import SignPreview from "../../components/SignPreview";
 import type { Provider } from "../types";
 
 interface Props {
@@ -58,7 +59,9 @@ export default function LoginForm({ onLoginSuccess, onNeedSignup, onGoFindId, on
         <span className="dot">·</span>
         <button type="button" className="link-btn" onClick={onGoResetPassword}>비밀번호 찾기</button>
         <span className="dot">·</span>
-        <button type="button" className="link-btn" onClick={() => onNeedSignup("LOCAL")}>회원가입</button>
+        <SignPreview src="/sign/signup.mp4">
+          <button type="button" className="link-btn" onClick={() => onNeedSignup("LOCAL")}>회원가입</button>
+        </SignPreview>
       </div>
 
       <div className="divider"><span>또는</span></div>
