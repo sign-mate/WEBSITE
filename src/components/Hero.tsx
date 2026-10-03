@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
-import demoVideo from "../assets/demo.webm";
 import SignPreview from "./SignPreview";
 
 export default function Hero() {
@@ -128,7 +127,7 @@ export default function Hero() {
           </div>
           <div className="demo-sentence">다음 주 수요일부터 새로운 정책이 적용됩니다.</div>
           <div className="demo-video">
-            <video src={demoVideo} autoPlay muted loop playsInline />
+            <video src="/sign/demo.mp4" autoPlay muted loop playsInline />
             <div className="demo-play">▶</div>
           </div>
           <p className="demo-hint">카드를 끌어서 원하는 곳에 두세요</p>
