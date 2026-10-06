@@ -1,3 +1,4 @@
+import { CHROME_STORE_URL } from "../constants";
 import { useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
 import SignPreview from "./SignPreview";
@@ -86,7 +87,7 @@ export default function Hero() {
         </p>
         <div className="cta-row">
           <SignPreview src="/sign/add-chrome.mp4">
-            <a className="btn-primary" href="#install">
+            <a className="btn-primary" href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">
               Chrome에 추가하기
             </a>
           </SignPreview>
