@@ -1,3 +1,4 @@
+import { CHROME_STORE_URL } from "../constants";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useScrolled } from "../hooks/useScrolled";
@@ -67,7 +68,7 @@ export default function Nav({ isLoggedIn, onLoginClick, onMyPageClick, onLogout 
           </SignPreview>
         )}
         <SignPreview src="/sign/install.mp4">
-          <a className="nav-cta" href="/#install">
+          <a className="nav-cta" href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">
             확장 프로그램 설치 →
           </a>
         </SignPreview>

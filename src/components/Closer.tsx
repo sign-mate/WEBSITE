@@ -1,3 +1,4 @@
+import { CHROME_STORE_URL } from "../constants";
 import SignPreview from "./SignPreview";
 
 export default function Closer() {
@@ -8,7 +9,13 @@ export default function Closer() {
         <h2>지금 바로 설치해보세요</h2>
         <p>Chrome 웹 스토어에서 몇 초면 시작할 수 있습니다.</p>
         <SignPreview src="/sign/add-chrome.mp4">
-          <a className="btn-primary" href="#" style={{ justifyContent: "center", minWidth: 220 }}>
+          <a
+            className="btn-primary"
+            href={CHROME_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ justifyContent: "center", minWidth: 220 }}
+          >
             Chrome에 추가하기
           </a>
         </SignPreview>
